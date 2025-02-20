@@ -19,7 +19,7 @@ public class Persecucion : MonoBehaviour
         {
             patrullaPolicia.PausarPatrulla();
             agentePolicia.SetDestination(ladron.position);
-            Debug.Log("¡Veo al ladrón! Iniciando persecución.");
+            
         }
     }
 

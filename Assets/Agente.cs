@@ -10,7 +10,7 @@ public class Agente : MonoBehaviour
     public Transform[] destinos;
     private int indiceDestino = 0;
 
-    public bool patrullando = true; // Variable de estado
+    public bool patrullando = true; 
 
     void Start()
     {
@@ -34,7 +34,7 @@ public class Agente : MonoBehaviour
     public void PausarPatrulla()
     {
         patrullando = false;
-        agent.ResetPath(); // Detiene el movimiento
+        agent.ResetPath(); 
     }
 
     public void ReanudarPatrulla()
