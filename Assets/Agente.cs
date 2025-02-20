@@ -9,26 +9,48 @@ public class Agente : MonoBehaviour
     NavMeshAgent agent;
     public Transform[] destinos;
     private int indiceDestino = 0;
-    // Start is called before the first frame update
+
+    public bool patrullando = true; // Variable de estado
+
     void Start()
     {
         trans = GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
-        {
-            agent.destination = destinos[indiceDestino].position;
-        }
+        IrAlSiguienteDestino();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        if (!agent.pathPending && agent.remainingDistance <= 0.2f)
+        if (patrullando)
         {
-            indiceDestino = (indiceDestino + 1) % destinos.Length;
-            agent.destination = destinos[indiceDestino].position;
+            if (!agent.pathPending && agent.remainingDistance <= 0.2f)
+            {
+                indiceDestino = (indiceDestino + 1) % destinos.Length;
+                IrAlSiguienteDestino();
+            }
         }
     }
+
+    public void PausarPatrulla()
+    {
+        patrullando = false;
+        agent.ResetPath(); // Detiene el movimiento
+    }
+
+    public void ReanudarPatrulla()
+    {
+        patrullando = true;
+        IrAlSiguienteDestino();
+    }
+
+    public void IrAlSiguienteDestino()
+    {
+        if (destinos.Length == 0)
+        {
+            Debug.LogWarning("No hay puntos de patrulla asignados.");
+            return;
+        }
+
+        agent.destination = destinos[indiceDestino].position;
+    }
 }
-
-
