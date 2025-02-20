@@ -45,11 +45,6 @@ public class Agente : MonoBehaviour
 
     public void IrAlSiguienteDestino()
     {
-        if (destinos.Length == 0)
-        {
-            Debug.LogWarning("No hay puntos de patrulla asignados.");
-            return;
-        }
 
         agent.destination = destinos[indiceDestino].position;
     }
