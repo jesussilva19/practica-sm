@@ -13,9 +13,13 @@ public class Ladron : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal"); 
         float vertical = Input.GetAxis("Vertical");     
 
-        Vector3 movimiento = new Vector3(horizontal, 0, vertical) * velocidad * Time.deltaTime;
+        Vector3 movimiento = new Vector3(horizontal, 0, vertical);
 
-        
-        transform.Translate(movimiento);
+        if (movimiento.magnitude > 1)
+        {
+            movimiento.Normalize(); // Normalizar el vector para evitar velocidad mayor en diagonales
+        }
+
+        transform.Translate(movimiento * velocidad * Time.deltaTime);
     }
 }
