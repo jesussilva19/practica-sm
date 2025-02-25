@@ -1121,7 +1121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -220.95294
+      value: -190.5
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2259,7 +2259,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 15
+  m_Speed: 20
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -4572,7 +4572,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 15
+  m_Speed: 17
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -5983,7 +5983,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 15
+  m_Speed: 18
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -7105,7 +7105,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 15
+  m_Speed: 20
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 360
@@ -8683,7 +8683,7 @@ Transform:
   m_GameObject: {fileID: 1745100287}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.5, y: 2.3, z: -210.5}
+  m_LocalPosition: {x: -10.5, y: 2.3, z: -178.4}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
