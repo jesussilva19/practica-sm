@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class Persecucion : MonoBehaviour
@@ -19,7 +19,7 @@ public class Persecucion : MonoBehaviour
         {
             patrullaPolicia.PausarPatrulla();
             agentePolicia.SetDestination(ladron.position);
-            
+
         }
     }
 
@@ -35,7 +35,7 @@ public class Persecucion : MonoBehaviour
             {
                 agentePolicia.ResetPath();
                 patrullaPolicia.ReanudarPatrulla();
-                Debug.Log("Perd� al ladr�n tras pared. Vuelvo a patrullar.");
+                Debug.Log("Perdí al ladrón tras pared. Vuelvo a patrullar.");
             }
         }
     }
@@ -46,22 +46,33 @@ public class Persecucion : MonoBehaviour
         {
             agentePolicia.ResetPath();
             patrullaPolicia.ReanudarPatrulla();
-            Debug.Log("El ladr�n sali� del �rea. Retomando patrulla.");
+            Debug.Log("El ladrón salió del área. Retomando patrulla.");
         }
     }
-
     private bool TieneLineaDeVision()
     {
-        Vector3 origen = agentePolicia.transform.position + Vector3.up * 1.0f;
-        Vector3 direccion = ladron.position - agentePolicia.transform.position;
-        float distancia = direccion.magnitude;
+        Vector3 origen = agentePolicia.transform.position + Vector3.up * 1.0f; // Posición de los ojos del policía
+        Vector3 direccion = (ladron.position - agentePolicia.transform.position).normalized;
 
-        RaycastHit hit;
-        if (Physics.Raycast(origen, direccion.normalized, out hit, distancia))
+        float distancia = Vector3.Distance(agentePolicia.transform.position, ladron.position);
+
+        // 1️⃣ Calcula el ángulo entre la mirada del policía y el ladrón
+        float angulo = Vector3.Angle(agentePolicia.transform.forward, direccion);
+
+        // Si el ladrón está dentro del ángulo de 180°
+        if (angulo > 90)  // 180° dividido entre 2 = 90°
         {
-            return hit.transform == ladron;
+            return false; // Está fuera del campo de visión
         }
 
-        return false;
+        // 2️⃣ Verificar si hay paredes en medio con un Raycast
+        RaycastHit hit;
+        if (Physics.Raycast(origen, direccion, out hit, distancia))
+        {
+            return hit.transform == ladron; // Si el Raycast golpea al ladrón, lo ve
+        }
+
+        return false; // Si el Raycast choca con otra cosa, no lo ve
     }
+
 }
