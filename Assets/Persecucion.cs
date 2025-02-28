@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-
+using System.Collections;
 public class Persecucion : MonoBehaviour
 {
     public Transform ladron;
@@ -44,11 +44,20 @@ public class Persecucion : MonoBehaviour
     {
         if (other.transform == ladron)
         {
-            agentePolicia.ResetPath();
-            patrullaPolicia.ReanudarPatrulla();
-            Debug.Log("El ladrón salió del área. Retomando patrulla.");
+            StartCoroutine(EsperarAntesDePatrullar()); // Inicia la espera antes de patrullar
+            Debug.Log("El ladrón salió del área. Esperando 3 segundos antes de patrullar.");
         }
     }
+
+  
+    private IEnumerator EsperarAntesDePatrullar()
+    {
+        yield return new WaitForSeconds(10f); // Espera 3 segundos
+        agentePolicia.ResetPath();
+        patrullaPolicia.ReanudarPatrulla();
+        Debug.Log("Reanudando patrulla después de 3 segundos.");
+    }
+
     private bool TieneLineaDeVision()
     {
         Vector3 origen = agentePolicia.transform.position + Vector3.up * 1.0f; // Posición de los ojos del policía
