@@ -17,7 +17,7 @@ public class Ladron : MonoBehaviour
 
         if (movimiento.magnitude > 1)
         {
-            movimiento.Normalize(); // Normalizar el vector para evitar velocidad mayor en diagonales
+            movimiento.Normalize(); 
         }
 
         transform.Translate(movimiento * velocidad * Time.deltaTime);
