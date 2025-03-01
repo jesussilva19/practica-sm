@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Oro : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class Oro : MonoBehaviour
     {
         if (other.transform == ladron)
         {
-            Debug.Log("¡El ladrón ha robado el objeto!");
+            Debug.Log("Â¡El ladrÃ³n ha robado el objeto!");
             Destroy(gameObject);
         }
     }

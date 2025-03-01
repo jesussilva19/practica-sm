@@ -112,7 +112,7 @@ public class Persecucion : MonoBehaviour
     // 📡 Verifica si el policía tiene línea de visión del ladrón
     private bool TieneLineaDeVision()
     {
-        Vector3 origen = agentePolicia.transform.position + Vector3.up * 1.8f; // 📌 Nivel de los ojos
+        Vector3 origen = agentePolicia.transform.position + Vector3.up * 1f; // 📌 Nivel de los ojos
         Vector3 direccion = (ladron.position - origen).normalized;
         float distancia = Vector3.Distance(agentePolicia.transform.position, ladron.position);
 

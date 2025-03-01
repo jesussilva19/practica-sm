@@ -1,10 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class Detenido : MonoBehaviour
 {
-    public Ladron scriptLadron;
-
+    public Ladron scriptLadron; // 📌 Referencia al script del ladrón
     private NavMeshAgent agentePolicia;
 
     private void Start()
@@ -16,9 +15,19 @@ public class Detenido : MonoBehaviour
     {
         if (other.transform == scriptLadron.transform)
         {
-            Debug.Log("�Ladr�n atrapado! Deteniendo a ambos.");
-            agentePolicia.isStopped = true;
-            scriptLadron.enabled = false; 
+            Debug.Log("❌ ¡Perdiste! El policía atrapó al ladrón.");
+
+            agentePolicia.isStopped = true; // 🚔 Detiene al policía
+            scriptLadron.enabled = false;   // 🚶‍♂️ El ladrón ya no puede moverse
+
+            // 🛑 Detiene la ejecución del juego
+            TerminarJuego();
         }
+    }
+
+    private void TerminarJuego()
+    {
+        Debug.Log("🛑 El juego ha terminado.");
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }
