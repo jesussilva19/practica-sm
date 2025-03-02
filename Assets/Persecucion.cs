@@ -4,15 +4,15 @@ using System.Collections;
 
 public class Persecucion : MonoBehaviour
 {
-    public Transform ladron; // 📍 Referencia al ladrón
-    public Transform[] puntosBusqueda; // 📌 Puntos donde buscar tras perder al ladrón
-    public float tiempoEsperaBusqueda = 3f; // ⏳ Tiempo de espera antes de buscar
-    public float distanciaMinima = 0.5f; // 📏 Distancia mínima para llegar a un punto
+    public Transform ladron; // Referencia al ladrón
+    public Transform[] puntosBusqueda; // Puntos donde buscar tras perder al ladrón
+    public float tiempoEsperaBusqueda = 3f; // Tiempo de espera antes de buscar
+    public float distanciaMinima = 0.5f; //  Distancia mínima para llegar a un punto
 
     private NavMeshAgent agentePolicia;
     private Agente patrullaPolicia;
-    private bool enBusqueda = false; // 🚨 Evita que el policía repita búsquedas sin sentido
-    private bool haVistoAlLadron = false; // ✅ NUEVO: Indica si alguna vez lo ha visto
+    private bool enBusqueda = false; //  Evita que el policía repita búsquedas sin sentido
+    private bool haVistoAlLadron = false; // Indica si alguna vez lo ha visto
 
     private void Start()
     {
@@ -24,10 +24,10 @@ public class Persecucion : MonoBehaviour
     {
         if (other.transform == ladron && TieneLineaDeVision())
         {
-            haVistoAlLadron = true; // ✅ Activa persecución solo si lo ve
+            haVistoAlLadron = true; // Activa persecución solo si lo ve
             patrullaPolicia.PausarPatrulla();
             agentePolicia.SetDestination(ladron.position);
-            Debug.Log("🚔 Policía detectó al ladrón. ¡Iniciando persecución!");
+            Debug.Log("Policía detectó al ladrón. ¡Iniciando persecución!");
         }
         else
         {
@@ -41,15 +41,15 @@ public class Persecucion : MonoBehaviour
         {
             if (TieneLineaDeVision())
             {
-                haVistoAlLadron = true; // ✅ Solo lo persigue si ya lo vio antes
+                haVistoAlLadron = true; // Solo lo persigue si ya lo vio antes
                 agentePolicia.SetDestination(ladron.position);
                 Debug.Log("👀 Policía sigue viendo al ladrón.");
             }
             else
             {
-                if (haVistoAlLadron) // ✅ Solo si antes lo vio
+                if (haVistoAlLadron) //Solo si antes lo vio
                 {
-                    Debug.Log("🚧 Perdí al ladrón tras una pared. Deteniéndome...");
+                    Debug.Log("Perdí al ladrón tras una pared. Deteniéndome...");
                     agentePolicia.ResetPath();
                     if (!enBusqueda)
                     {
@@ -64,9 +64,9 @@ public class Persecucion : MonoBehaviour
     {
         if (other.transform == ladron)
         {
-            if (haVistoAlLadron) // ✅ Solo busca si lo había visto antes
+            if (haVistoAlLadron) // Solo busca si lo había visto antes
             {
-                Debug.Log("🏃‍♂️ El ladrón salió del área de detección.");
+                Debug.Log(" El ladrón salió del área de detección.");
                 if (!enBusqueda)
                 {
                     StartCoroutine(EsperarYBuscarAntesDePatrullar());
@@ -76,71 +76,71 @@ public class Persecucion : MonoBehaviour
         }
     }
 
-    // 🕵️‍♂️ Corrutina: Espera y revisa puntos antes de volver a patrullar
+    // Corrutina: Espera y revisa puntos antes de volver a patrullar
     private IEnumerator EsperarYBuscarAntesDePatrullar()
     {
         enBusqueda = true;
         agentePolicia.isStopped = true;
-        yield return new WaitForSeconds(tiempoEsperaBusqueda); // ⏳ Espera unos segundos antes de buscar
+        yield return new WaitForSeconds(tiempoEsperaBusqueda); // Espera unos segundos antes de buscar
 
         agentePolicia.isStopped = false;
 
-        // 🔎 Revisar los puntos de búsqueda antes de patrullar
+        // Revisar los puntos de búsqueda antes de patrullar
         foreach (Transform punto in puntosBusqueda)
         {
             if (punto != null)
             {
                 agentePolicia.SetDestination(punto.position);
-                Debug.Log("🔎 Buscando en: " + punto.position);
+                Debug.Log("Buscando en: " + punto.position);
 
-                // ✅ Esperar hasta llegar al punto
+                // Esperar hasta llegar al punto
                 while (agentePolicia.pathPending || agentePolicia.remainingDistance > distanciaMinima)
                 {
                     yield return null;
                 }
 
-                yield return new WaitForSeconds(2f); // ⏳ Espera 2 segundos en cada punto
+                yield return new WaitForSeconds(2f); //  Espera 2 segundos en cada punto
             }
         }
 
-        // ✅ Cuando termine la búsqueda, vuelve a la patrulla normal
+        // Cuando termine la búsqueda, vuelve a la patrulla normal
         patrullaPolicia.ReanudarPatrulla();
         enBusqueda = false;
-        Debug.Log("🔄 Finalizada la búsqueda. Volviendo a patrullar.");
+        Debug.Log("Finalizada la búsqueda. Volviendo a patrullar.");
     }
 
-    // 📡 Verifica si el policía tiene línea de visión del ladrón
+    // Verifica si el policía tiene línea de visión del ladrón
     private bool TieneLineaDeVision()
     {
-        Vector3 origen = agentePolicia.transform.position + Vector3.up * 1f; // 📌 Nivel de los ojos
+        Vector3 origen = agentePolicia.transform.position + Vector3.up * 1f; // Nivel de los ojos
         Vector3 direccion = (ladron.position - origen).normalized;
         float distancia = Vector3.Distance(agentePolicia.transform.position, ladron.position);
 
-        // 🚧 Solo detectar objetos en "Obstaculos" y "Ladron"
+        // Solo detectar objetos en "Obstaculos" y "Ladron"
         int mascara = LayerMask.GetMask("Obstaculos", "Ladron");
 
         RaycastHit hit;
         if (Physics.Raycast(origen, direccion, out hit, distancia, mascara))
         {
             Debug.DrawRay(origen, direccion * distancia, Color.red, 0.5f);
-            Debug.Log("🔎 El Raycast golpeó: " + hit.transform.name + " en la capa: " + LayerMask.LayerToName(hit.collider.gameObject.layer));
+            Debug.Log("El Raycast golpeó: " + hit.transform.name + " en la capa: " + LayerMask.LayerToName(hit.collider.gameObject.layer));
 
-            // ❌ Si golpea un obstáculo antes del ladrón, retorna FALSO inmediatamente
+            // Si golpea un obstáculo antes del ladrón, retorna FALSO inmediatamente
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Obstaculos"))
             {
-                Debug.Log("🚧 El ladrón está bloqueado por: " + hit.transform.name);
+                Debug.Log("El ladrón está bloqueado por: " + hit.transform.name);
                 return false;
             }
 
-            // ✅ Si el primer objeto golpeado es el ladrón, retorna VERDADERO
+            // Si el primer objeto golpeado es el ladrón, retorna VERDADERO
             else
             {
-                Debug.Log("🚨 ¡El policía ve al ladrón!");
+                Debug.Log("¡El policía ve al ladrón!");
                 return true;
             }
         }
 
-        Debug.Log("⚠️ El Raycast NO golpeó nada.");
+        Debug.Log("El Raycast NO golpeó nada.");
         return true; // Si no golpea nada, no lo ve
     }
 }
