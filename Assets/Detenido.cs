@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class Detenido : MonoBehaviour
 {
-    public Ladron scriptLadron; // Referencia al script del ladrón
+    public Ladron scriptLadron; 
     private NavMeshAgent agentePolicia;
 
     private void Start()
