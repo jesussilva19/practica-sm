@@ -6,8 +6,9 @@ public class Persecucion : MonoBehaviour
 {
     public Transform ladron; // Referencia al ladrón
     public Transform[] puntosBusqueda; // Puntos donde buscar tras perder al ladrón
-    public float tiempoEsperaBusqueda = 3f; // Tiempo de espera antes de buscar
-    public float distanciaMinima = 0.5f; //  Distancia mínima para llegar a un punto
+
+    private float tiempoEsperaBusqueda = 3f; // Tiempo de espera antes de buscar
+    private float distanciaMinima = 5f; //  Distancia mínima para llegar a un punto
 
     private NavMeshAgent agentePolicia;
     private Agente patrullaPolicia;
@@ -140,7 +141,7 @@ public class Persecucion : MonoBehaviour
             }
         }
 
-        Debug.Log("El Raycast NO golpeó nada.");
+        
         return true; 
     }
 }

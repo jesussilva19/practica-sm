@@ -1019,9 +1019,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ladron: {fileID: 1745100294}
-  puntosBusqueda: []
-  tiempoEsperaBusqueda: 3
-  distanciaMinima: 0.5
+  puntosBusqueda:
+  - {fileID: 1622689611}
+  - {fileID: 1710549799}
 --- !u!1 &140150777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,9 +1348,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ladron: {fileID: 1745100294}
-  puntosBusqueda: []
-  tiempoEsperaBusqueda: 3
-  distanciaMinima: 0.5
+  puntosBusqueda:
+  - {fileID: 1622689611}
+  - {fileID: 1710549799}
 --- !u!1 &340071256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1965,8 +1965,6 @@ MonoBehaviour:
   puntosBusqueda:
   - {fileID: 1622689611}
   - {fileID: 1710549799}
-  tiempoEsperaBusqueda: 3
-  distanciaMinima: 5
 --- !u!135 &433794536
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5204,9 +5202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ladron: {fileID: 1745100294}
-  puntosBusqueda: []
-  tiempoEsperaBusqueda: 3
-  distanciaMinima: 0.5
+  puntosBusqueda:
+  - {fileID: 1622689611}
+  - {fileID: 1710549799}
 --- !u!1 &1021301903
 GameObject:
   m_ObjectHideFlags: 0
@@ -5844,9 +5842,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ladron: {fileID: 1745100294}
-  puntosBusqueda: []
-  tiempoEsperaBusqueda: 3
-  distanciaMinima: 0.5
+  puntosBusqueda:
+  - {fileID: 1622689611}
+  - {fileID: 1710549799}
 --- !u!1 &1171407710
 GameObject:
   m_ObjectHideFlags: 0
