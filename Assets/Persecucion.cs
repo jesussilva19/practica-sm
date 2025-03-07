@@ -100,7 +100,7 @@ public class Persecucion : MonoBehaviour
                     yield return null;
                 }
 
-                yield return new WaitForSeconds(2f); //  Espera 2 segundos en cada punto
+                yield return new WaitForSeconds(tiempoEsperaBusqueda); //  Espera unos segundos en cada punto
             }
         }
 
@@ -116,6 +116,28 @@ public class Persecucion : MonoBehaviour
         Vector3 origen = agentePolicia.transform.position + Vector3.up * 1f; // Nivel de los ojos
         Vector3 direccion = (ladron.position - origen).normalized;
         float distancia = Vector3.Distance(agentePolicia.transform.position, ladron.position);
+
+
+
+
+        //DE AQUI
+        Vector3 forward = agentePolicia.transform.forward; 
+
+        
+        float angulo = Vector3.Angle(forward, direccion);
+
+        float anguloVision = 60f;
+
+        if (angulo > anguloVision)
+        {
+            Debug.Log("🚧 Ladrón fuera del campo de visión.");
+            return false;
+        }
+        //HASTA AQUI PUESTO DESPUES DE LA ENTREGA
+
+
+
+
 
         // Solo detectar objetos en "Obstaculos" y "Ladron"
         int mascara = LayerMask.GetMask("Obstaculos", "Ladron");
