@@ -119,8 +119,6 @@ public class Persecucion : MonoBehaviour
 
 
 
-
-        //DE AQUI
         Vector3 forward = agentePolicia.transform.forward; 
 
         
@@ -133,7 +131,6 @@ public class Persecucion : MonoBehaviour
             Debug.Log("🚧 Ladrón fuera del campo de visión.");
             return false;
         }
-        //HASTA AQUI PUESTO DESPUES DE LA ENTREGA
 
 
 
