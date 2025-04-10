@@ -13,6 +13,8 @@ public class Agente : MonoBehaviour
 
     public bool patrullando = true;
     private bool enBusqueda = false;
+    public bool ladronDetectado = false;
+    public Transform ladronTransform;
 
     void Start()
     {
@@ -51,12 +53,13 @@ public class Agente : MonoBehaviour
         agent.destination = destinos[indiceDestino].position;
     }
 
-
     public void VerLadron(Transform ladron)
     {
         if (!agent.isStopped)
         {
             PausarPatrulla();
+            ladronDetectado = true;
+            ladronTransform = ladron;
             agent.SetDestination(ladron.position);
             Debug.Log("Agente: Persiguiendo al ladrón.");
         }
@@ -105,6 +108,7 @@ public class Agente : MonoBehaviour
 
         ReanudarPatrulla();
         enBusqueda = false;
+        ladronDetectado = false;
         Debug.Log(" Reanudando patrulla.");
     }
 }
