@@ -2,7 +2,9 @@ using System.Collections;
 
 public class TareaPatrullar : TareaHTN
 {
-    private int indice = 0;
+    public TareaPatrullar()
+    {
+    }
 
     public override bool EsEjecutable(Agente agente)
     {
