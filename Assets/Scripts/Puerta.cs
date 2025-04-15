@@ -50,7 +50,7 @@ public class PuertaSimple : MonoBehaviour
         if (nombreRaiz == "Ladron" || nombreRaiz.StartsWith("Policia"))
         {
             CambiarEstadoPuerta(true);
-            Debug.Log("✅ Puerta detectó a: " + nombreRaiz);
+            Debug.Log("Puerta detectó a: " + nombreRaiz);
         }
     }
 

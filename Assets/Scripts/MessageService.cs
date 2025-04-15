@@ -28,7 +28,12 @@ public class MessageService : MonoBehaviour
             _agents.Add(agentId, agent);
         }
     }
-    
+
+    public List<string> GetAllAgentIds()
+    {
+        return new List<string>(_agents.Keys);
+    }
+
     public void SendMessage(FipaAclMessage message)
     {
         foreach (var receiver in message.Receivers)

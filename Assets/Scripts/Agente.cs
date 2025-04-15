@@ -80,6 +80,9 @@ public class Agente : MonoBehaviour
             agent.SetDestination(ladron.position);
             Debug.Log("Agente: Ladrón detectado.");
             Debug.Log("Agente: Persiguiendo al ladrón.");
+
+            // Enviar mensaje INFORM a todos los otros agentes
+            EnviarMensajeLadronDetectado(ladron.position);
         }
     }
 
@@ -88,6 +91,7 @@ public class Agente : MonoBehaviour
         Debug.Log("Agente: Perdiendo al ladrón.");
         if (!enBusqueda)
         {
+            EnviarMensajeLadronPerdido();
             StartCoroutine(BuscarYLuegoPatrullar(puntosBusqueda, espera));
         }
     }
@@ -95,6 +99,7 @@ public class Agente : MonoBehaviour
     public void DetenerLadron()
     {
         agent.isStopped = true;
+        EnviarMensajeLadronDetenido();
         Debug.Log(" Agente: Ladrón detenido.");
     }
 
@@ -134,25 +139,54 @@ public class Agente : MonoBehaviour
     {
         _messageQueue.Enqueue(message);
     }
-    
-    
+
+
     private void ProcessMessage(FipaAclMessage message)
     {
-        switch (message.Performative)
+        switch (message.Content.Split(':')[0])
         {
-            case FipaPerformatives.INFORM:
-                HandleInform(message);
+            case "LADRON_DETECTADO":
+                // Extraer la posición del ladrón del mensaje
+                if (message.Content.Contains(":"))
+                {
+                    string[] coordenadas = message.Content.Split(':')[1].Split(',');
+                    float x = float.Parse(coordenadas[0]);
+                    float y = float.Parse(coordenadas[1]);
+                    float z = float.Parse(coordenadas[2]);
+                    Vector3 posicionLadron = new Vector3(x, y, z);
+
+                    // Decidir si acudir en ayuda basado en la distancia, estado actual, etc.
+                    if (!ladronDetectado && Vector3.Distance(transform.position, posicionLadron) < 50f)
+                    {
+                        Debug.Log(AgentId + ": Recibido mensaje de ladrón detectado. Acudiendo.");
+                        // Ir a la posición del ladrón
+                        PausarPatrulla();
+                        agent.SetDestination(posicionLadron);
+                    }
+                }
                 break;
-            case FipaPerformatives.REQUEST:
-                HandleRequest(message);
+
+            case "LADRON_PERDIDO":
+                // Puedes implementar alguna lógica para responder a este mensaje
+                Debug.Log(AgentId + ": Recibido mensaje de ladrón perdido.");
                 break;
-            // Maneja otros performatives según sea necesario
+
+            case "LADRON_DETENIDO":
+                // Si el ladrón ha sido detenido, volver a la rutina normal
+                if (ladronDetectado)
+                {
+                    Debug.Log(AgentId + ": Recibido mensaje de ladrón detenido. Volviendo a patrullar.");
+                    ladronDetectado = false;
+                    ReanudarPatrulla();
+                }
+                break;
+
             default:
-                SendNotUnderstood(message.Sender, message.ConversationId);
+                Debug.Log(AgentId + ": Mensaje no reconocido recibido: " + message.Content);
                 break;
         }
     }
-    
+
     private void HandleInform(FipaAclMessage message)
     {
         // Implementa la lógica para manejar un mensaje INFORM
@@ -236,5 +270,67 @@ public class Agente : MonoBehaviour
         
         MessageService.Instance.SendMessage(message);
     }
+   
 
+
+    // Metodos para enviar mensajes FIPA-ACL
+    private void EnviarMensajeLadronDetectado(Vector3 posicion)
+    {
+        FipaAclMessage mensaje = new FipaAclMessage();
+        mensaje.Performative = FipaPerformatives.INFORM;
+        mensaje.Sender = AgentId;
+        mensaje.Content = "LADRON_DETECTADO:" + posicion.x + "," + posicion.y + "," + posicion.z;
+        mensaje.ConversationId = System.Guid.NewGuid().ToString();
+
+        // Añadir todos los otros agentes como receptores
+        foreach (var agente in MessageService.Instance.GetAllAgentIds())
+        {
+            if (agente != AgentId) // No enviarse el mensaje a sí mismo
+            {
+                mensaje.Receivers.Add(agente);
+            }
+        }
+
+        MessageService.Instance.SendMessage(mensaje);
+    }
+
+    private void EnviarMensajeLadronPerdido()
+    {
+        FipaAclMessage mensaje = new FipaAclMessage();
+        mensaje.Performative = FipaPerformatives.INFORM;
+        mensaje.Sender = AgentId;
+        mensaje.Content = "LADRON_PERDIDO";
+        mensaje.ConversationId = System.Guid.NewGuid().ToString();
+
+        // Añadir todos los otros agentes como receptores
+        foreach (var agente in MessageService.Instance.GetAllAgentIds())
+        {
+            if (agente != AgentId)
+            {
+                mensaje.Receivers.Add(agente);
+            }
+        }
+
+        MessageService.Instance.SendMessage(mensaje);
+    }
+
+    private void EnviarMensajeLadronDetenido()
+    {
+        FipaAclMessage mensaje = new FipaAclMessage();
+        mensaje.Performative = FipaPerformatives.INFORM;
+        mensaje.Sender = AgentId;
+        mensaje.Content = "LADRON_DETENIDO";
+        mensaje.ConversationId = System.Guid.NewGuid().ToString();
+
+        // Añadir todos los otros agentes como receptores
+        foreach (var agente in MessageService.Instance.GetAllAgentIds())
+        {
+            if (agente != AgentId)
+            {
+                mensaje.Receivers.Add(agente);
+            }
+        }
+
+        MessageService.Instance.SendMessage(mensaje);
+    }
 }
