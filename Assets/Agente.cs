@@ -27,28 +27,33 @@ public class Agente : MonoBehaviour
         IrAlSiguienteDestino();
         MessageService.Instance.RegisterAgent(AgentId, this);
         Debug.Log($"Agente: {AgentId} registrado");
+        IniciarPatrulla();
 
+    }
+
+    private void IniciarPatrulla()
+    {
+        if (destinos.Length == 0)
+        {
+            Debug.LogWarning($"Agente {AgentId}: No hay puntos de patrulla configurados");
+            return;
+        }
+        patrullando = true;
+        IrAlSiguienteDestino();
     }
 
     void Update()
     {
-        if (patrullando)
+        ActualizarPatrulla();
+        ProcesarMensajes();
+    }
+
+    private void ActualizarPatrulla()
+    {
+        if (patrullando && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            if (!agent.pathPending && agent.remainingDistance <= 0.2f)
-            {
-                indiceDestino = (indiceDestino + 1) % destinos.Length;
-                IrAlSiguienteDestino();
-            }
-            // Procesar mensajes en cada frame
-            while (_messageQueue.Count > 0)
-            {
-                ProcessMessage(_messageQueue.Dequeue());
-            }
-        }
-        // Procesar mensajes en cada frame
-        while (_messageQueue.Count > 0)
-        {
-            ProcessMessage(_messageQueue.Dequeue());
+            indiceDestino = (indiceDestino + 1) % destinos.Length;
+            IrAlSiguienteDestino();
         }
     }
 
@@ -66,9 +71,21 @@ public class Agente : MonoBehaviour
 
     public void IrAlSiguienteDestino()
     {
-        if (destinos.Length == 0) return;
-        agent.destination = destinos[indiceDestino].position;
+        if (destinos == null || destinos.Length == 0)
+        {
+            Debug.LogWarning($"Agente {AgentId}: No hay destinos configurados");
+            return;
+        }
+
+        if (destinos[indiceDestino] == null)
+        {
+            Debug.LogWarning($"Agente {AgentId}: El destino en índice {indiceDestino} es nulo");
+            return;
+        }
+
+        agent.SetDestination(destinos[indiceDestino].position);
     }
+
 
     public void VerLadron(Transform ladron)
     {
@@ -140,6 +157,17 @@ public class Agente : MonoBehaviour
         _messageQueue.Enqueue(message);
     }
 
+    private void ProcesarMensajes()
+    {
+        int mensajesProcesados = 0;
+        int maximoMensajesPorFrame = 3; // Limitar el número de mensajes procesados por frame
+
+        while (_messageQueue.Count > 0 && mensajesProcesados < maximoMensajesPorFrame)
+        {
+            ProcessMessage(_messageQueue.Dequeue());
+            mensajesProcesados++;
+        }
+    }
 
     private void ProcessMessage(FipaAclMessage message)
     {
