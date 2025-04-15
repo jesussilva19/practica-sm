@@ -26,6 +26,7 @@ public class Agente : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         IrAlSiguienteDestino();
         MessageService.Instance.RegisterAgent(AgentId, this);
+        Debug.Log($"Agente: {AgentId} registrado");
 
     }
 

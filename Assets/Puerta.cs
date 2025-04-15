@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-
 public class PuertaSimple : MonoBehaviour
 {
     public float velocidad = 90f;
     private bool abrir = false;
+    private bool estadoAnterior = false; // Para detectar cambios de estado
     private Quaternion rotInicial;
     private Quaternion rotAbierta;
 
@@ -15,35 +15,52 @@ public class PuertaSimple : MonoBehaviour
 
     void Update()
     {
+        ActualizarPuerta();
+    }
+
+    private void ActualizarPuerta()
+    {
+        // Verificar si el estado ha cambiado
+        if (abrir != estadoAnterior)
+        {
+            if (abrir)
+            {
+                Debug.Log("Abriendo puerta...");
+            }
+            else
+            {
+                Debug.Log("Cerrando puerta...");
+            }
+            estadoAnterior = abrir; // Actualizar el estado anterior
+        }
+
+        // Actualizar la rotación
         Quaternion rotObjetivo = abrir ? rotAbierta : rotInicial;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotObjetivo, velocidad * Time.deltaTime);
+    }
 
-        if (abrir)
-            Debug.Log(" Abriendo puerta...");
+    public void CambiarEstadoPuerta(bool estaAbierta)
+    {
+        abrir = estaAbierta;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         string nombreRaiz = other.transform.root.name;
-
         if (nombreRaiz == "Ladron" || nombreRaiz.StartsWith("Policia"))
         {
-            abrir = true;
+            CambiarEstadoPuerta(true);
             Debug.Log("✅ Puerta detectó a: " + nombreRaiz);
         }
     }
 
-
     private void OnTriggerExit(Collider other)
     {
-        string nombre = other.gameObject.name;
-
-        if (nombre == "Ladron" || nombre.StartsWith("Policia"))
+        string nombreRaiz = other.transform.root.name;
+        if (nombreRaiz == "Ladron" || nombreRaiz.StartsWith("Policia"))
         {
-            abrir = false;
-            Debug.Log("Puerta dejó de detectar: " + nombre);
+            CambiarEstadoPuerta(false);
+            Debug.Log("Puerta dejó de detectar: " + nombreRaiz);
         }
     }
-
 }
-
