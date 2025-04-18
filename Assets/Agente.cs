@@ -27,7 +27,7 @@ public class Agente : MonoBehaviour
         IrAlSiguienteDestino();
         MessageService.Instance.RegisterAgent(AgentId, this);
         Debug.Log($"Agente: {AgentId} registrado");
-        IniciarPatrulla();
+        //IniciarPatrulla();
 
     }
 
@@ -48,12 +48,23 @@ public class Agente : MonoBehaviour
         ProcesarMensajes();
     }
 
-    private void ActualizarPatrulla()
+    /*private void ActualizarPatrulla()
     {
         if (patrullando && !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             indiceDestino = (indiceDestino + 1) % destinos.Length;
             IrAlSiguienteDestino();
+        }
+    }*/
+    private void ActualizarPatrulla()
+    {
+        if (patrullando)
+        {
+            if (!agent.pathPending && agent.remainingDistance <= 0.2f)
+            {
+                indiceDestino = (indiceDestino + 1) % destinos.Length;
+                IrAlSiguienteDestino();
+            }
         }
     }
 
