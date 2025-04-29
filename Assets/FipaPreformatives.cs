@@ -6,7 +6,7 @@ public static class FipaPerformatives
     public const string REFUSE = "REFUSE";
     public const string CONFIRM = "CONFIRM";
     public const string DISCONFIRM = "DISCONFIRM";
-    public const string CFP = "CFP";  // Call for proposal
+    public const string CFP = "CFP";
     public const string PROPOSE = "PROPOSE";
     public const string ACCEPT_PROPOSAL = "ACCEPT_PROPOSAL";
     public const string REJECT_PROPOSAL = "REJECT_PROPOSAL";

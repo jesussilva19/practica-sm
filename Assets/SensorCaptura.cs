@@ -3,11 +3,11 @@
 public class Detenido : MonoBehaviour
 {
     public Ladron scriptLadron;
-    private Agente agente;
+    private Policia agente;
 
     private void Start()
     {
-        agente = GetComponentInParent<Agente>();
+        agente = GetComponentInParent<Policia>();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -6,6 +6,7 @@ using UnityEngine;
 public class Ladron : MonoBehaviour
 {
     public float velocidad = 5f;
+    public bool oro = false;
 
     void Update()
     {
@@ -21,5 +22,14 @@ public class Ladron : MonoBehaviour
         }
 
         transform.Translate(movimiento * velocidad * Time.deltaTime);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        // Verifica si el objeto con el que colisiona es el oro
+        if (other.GetComponent<Oro>() != null)
+        {
+            oro = true; // Actualiza el estado del ladrón para indicar que lleva el oro
+        }
     }
 }

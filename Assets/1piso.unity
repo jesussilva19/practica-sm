@@ -881,7 +881,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1070,11 +1070,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &97465611
 MonoBehaviour:
@@ -1194,7 +1194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -190.5
+      value: -192.9
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1227,7 +1227,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1653793467}
+    - targetCorrespondingSourceObject: {fileID: 100008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1653793468}
   m_SourcePrefab: {fileID: 100100000, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
 --- !u!1 &154750640
 GameObject:
@@ -1465,11 +1471,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &186473641
 MonoBehaviour:
@@ -2182,7 +2188,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &460765620
 GameObject:
@@ -2354,7 +2360,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2712,6 +2718,7 @@ GameObject:
   - component: {fileID: 507158429}
   - component: {fileID: 507158428}
   - component: {fileID: 507158427}
+  - component: {fileID: 507158433}
   - component: {fileID: 507158426}
   - component: {fileID: 507158432}
   m_Layer: 0
@@ -2750,7 +2757,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507158425}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
@@ -2880,6 +2887,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &507158433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507158425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d7f3008b74a43a4988a4791af5db64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentId: policia4
+  destinos:
+  - {fileID: 697279568}
+  - {fileID: 1724911712}
+  - {fileID: 486498900}
+  - {fileID: 367068624}
+  - {fileID: 51879157}
+  isPatrolling: 1
+  thiefDetected: 0
+  thiefTransform: {fileID: 0}
+  searchDelayTime: 2
+  searchPointWaitTime: 2
 --- !u!1 &510544883
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,7 +3569,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -3800,37 +3831,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 617921673}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &596926066
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 596926067}
-  m_Layer: 0
-  m_Name: Coche
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &596926067
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596926066}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.4, y: 1.4, z: -184.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &598253504
 GameObject:
@@ -5464,6 +5464,7 @@ GameObject:
   - component: {fileID: 956913521}
   - component: {fileID: 956913520}
   - component: {fileID: 956913519}
+  - component: {fileID: 956913525}
   - component: {fileID: 956913518}
   - component: {fileID: 956913524}
   m_Layer: 0
@@ -5502,7 +5503,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956913517}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
@@ -5631,6 +5632,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &956913525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956913517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d7f3008b74a43a4988a4791af5db64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentId: policia2
+  destinos:
+  - {fileID: 1946342598}
+  - {fileID: 1317594081}
+  - {fileID: 147735422}
+  - {fileID: 378571281}
+  isPatrolling: 1
+  thiefDetected: 0
+  thiefTransform: {fileID: 0}
+  searchDelayTime: 2
+  searchPointWaitTime: 2
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -5884,6 +5908,7 @@ GameObject:
   - component: {fileID: 993406314}
   - component: {fileID: 993406313}
   - component: {fileID: 993406312}
+  - component: {fileID: 993406318}
   - component: {fileID: 993406311}
   - component: {fileID: 993406317}
   m_Layer: 0
@@ -5922,7 +5947,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 993406310}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
@@ -6050,6 +6075,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &993406318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993406310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d7f3008b74a43a4988a4791af5db64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentId: policia3
+  destinos:
+  - {fileID: 1874217867}
+  - {fileID: 1171407711}
+  - {fileID: 1144826267}
+  isPatrolling: 1
+  thiefDetected: 0
+  thiefTransform: {fileID: 0}
+  searchDelayTime: 2
+  searchPointWaitTime: 2
 --- !u!1 &1007289365
 GameObject:
   m_ObjectHideFlags: 0
@@ -6220,11 +6267,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1014985803
 MonoBehaviour:
@@ -6764,7 +6811,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -7015,11 +7062,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1164596410
 MonoBehaviour:
@@ -7273,6 +7320,7 @@ GameObject:
   - component: {fileID: 1227226452}
   - component: {fileID: 1227226451}
   - component: {fileID: 1227226450}
+  - component: {fileID: 1227226456}
   - component: {fileID: 1227226449}
   - component: {fileID: 1227226455}
   m_Layer: 0
@@ -7311,7 +7359,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1227226448}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
@@ -7440,6 +7488,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1227226456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227226448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d7f3008b74a43a4988a4791af5db64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentId: policia5
+  destinos:
+  - {fileID: 625251700}
+  - {fileID: 1233262435}
+  - {fileID: 697279568}
+  - {fileID: 51879157}
+  isPatrolling: 1
+  thiefDetected: 0
+  thiefTransform: {fileID: 0}
+  searchDelayTime: 2
+  searchPointWaitTime: 2
 --- !u!1 &1233262434
 GameObject:
   m_ObjectHideFlags: 0
@@ -7505,7 +7576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4521874486784168, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 70.89172
+      value: 73.1
       objectReference: {fileID: 0}
     - target: {fileID: 4521874486784168, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8257,6 +8328,50 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &1331592665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1331592667}
+  - component: {fileID: 1331592666}
+  m_Layer: 0
+  m_Name: SerrvicioComm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1331592666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331592665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb82e379c754641d6b1d0f46009e2a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1331592667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331592665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -23.19845, y: 4.958704, z: 4.010342}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1335463687
 GameObject:
   m_ObjectHideFlags: 0
@@ -8516,6 +8631,7 @@ GameObject:
   - component: {fileID: 1451659307}
   - component: {fileID: 1451659306}
   - component: {fileID: 1451659305}
+  - component: {fileID: 1451659312}
   - component: {fileID: 1451659310}
   - component: {fileID: 1451659311}
   m_Layer: 0
@@ -8532,14 +8648,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451659304}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   destinos:
-  - {fileID: 51879157}
   - {fileID: 367068624}
+  - {fileID: 51879157}
   - {fileID: 1874217867}
   patrullando: 1
   ladronDetectado: 0
@@ -8682,6 +8798,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1451659312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451659304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d7f3008b74a43a4988a4791af5db64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AgentId: policia1
+  destinos:
+  - {fileID: 367068624}
+  - {fileID: 51879157}
+  - {fileID: 1874217867}
+  isPatrolling: 1
+  thiefDetected: 0
+  thiefTransform: {fileID: 0}
+  searchDelayTime: 2
+  searchPointWaitTime: 2
 --- !u!1 &1483048645
 GameObject:
   m_ObjectHideFlags: 0
@@ -9607,6 +9745,45 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4521874486784168, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
   m_PrefabInstance: {fileID: 1235762541}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1653793464 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100008, guid: 85abc66ee2c921c4f94d78ff0bae4348, type: 3}
+  m_PrefabInstance: {fileID: 148188834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1653793467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653793464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d18a8eaf23c4301bf7d7b51fb5f71d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textoVictoria: {fileID: 0}
+--- !u!135 &1653793468
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653793464}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.04
+  m_Center: {x: 0, y: 0, z: 0.015}
 --- !u!1 &1669311117
 GameObject:
   m_ObjectHideFlags: 0
@@ -10351,6 +10528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocidad: 25
+  oro: 0
 --- !u!195 &1745100289
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11084,50 +11262,6 @@ Transform:
   - {fileID: 1764575436}
   - {fileID: 481356598}
   m_Father: {fileID: 2082174378}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1923689357
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1923689359}
-  - component: {fileID: 1923689358}
-  m_Layer: 0
-  m_Name: ServicioComunicacion
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1923689358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1923689357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cc56debb1b3c41638bc4b0c987ab6d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1923689359
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1923689357}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.814833, y: -36.294098, z: -13.587041}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924824094
 GameObject:
@@ -12154,7 +12288,6 @@ SceneRoots:
   - {fileID: 1235762541}
   - {fileID: 148188834}
   - {fileID: 1710549799}
-  - {fileID: 596926067}
-  - {fileID: 1923689359}
   - {fileID: 2082174378}
   - {fileID: 140150778}
+  - {fileID: 1331592667}

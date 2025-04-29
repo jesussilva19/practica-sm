@@ -7,18 +7,18 @@ public class Persecucion : MonoBehaviour
     public Transform ladron;
     public Transform[] puntosBusqueda;
 
-    private Agente agente;
+    private Policia agente;
 
     private void Start()
     {
-        agente = GetComponentInParent<Agente>();
+        agente = GetComponentInParent<Policia>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform == ladron && TieneLineaDeVision())
         {
-            agente.VerLadron(ladron);
+            agente.LadronVisto(ladron);
         }
     }
 
@@ -27,9 +27,9 @@ public class Persecucion : MonoBehaviour
         if (other.transform == ladron)
         {
             if (TieneLineaDeVision())
-                agente.VerLadron(ladron);
+                agente.LadronVisto(ladron);
             else
-                agente.PerderLadron(new List<Transform>(puntosBusqueda), 3f);
+                agente.LadronPerdido(new List<Transform>(puntosBusqueda));
         }
     }
 

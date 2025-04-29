@@ -21,7 +21,7 @@ public class MessageService : MonoBehaviour
             _instance = this;
         }
     }
-    
+
     public void RegisterAgent(string agentId, Agente agent)
     {
         if (!_agents.ContainsKey(agentId))

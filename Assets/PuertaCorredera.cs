@@ -54,11 +54,6 @@ public class PuertaCorredera : MonoBehaviour
 
     void Update()
     {
-        // TEST: Presiona T para probar la puerta
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            PersonaDetectada(true);
-        }
 
         // Movimiento suave hacia la posición objetivo
         transform.position = Vector3.Lerp(transform.position, posicionObjetivo, velocidad * Time.deltaTime);
@@ -97,7 +92,6 @@ public class PuertaCorredera : MonoBehaviour
             audioSource.clip = sonidoAbrir;
             audioSource.Play();
         }
-        Debug.Log("Puerta abriéndose");
     }
 
     void CerrarPuerta()
@@ -108,6 +102,5 @@ public class PuertaCorredera : MonoBehaviour
             audioSource.clip = sonidoCerrar;
             audioSource.Play();
         }
-        Debug.Log("Puerta cerrándose");
     }
 }
