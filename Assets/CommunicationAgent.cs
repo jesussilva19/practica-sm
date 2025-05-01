@@ -25,29 +25,29 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
     protected virtual void Start()
     {
         // Register with the message service
-        RegisterWithMessageService2();
+        RegisterWithMessageService();
     }
 
     protected virtual void OnEnable()
     {
-        RegisterWithMessageService2();
+        RegisterWithMessageService();
     }
 
     protected virtual void OnDisable()
     {
         // Unregister from message service when disabled
-        if (MessageService2.Instance != null)
+        if (MessageService.Instance != null)
         {
-            MessageService2.Instance.UnregisterAgent(AgentId);
+            MessageService.Instance.UnregisterAgent(AgentId);
         }
     }
 
     protected virtual void OnDestroy()
     {
         // Unregister from message service when destroyed
-        if (MessageService2.Instance != null)
+        if (MessageService.Instance != null)
         {
-            MessageService2.Instance.UnregisterAgent(AgentId);
+            MessageService.Instance.UnregisterAgent(AgentId);
         }
     }
 
@@ -57,16 +57,16 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         ProcessMessageQueue();
     }
 
-    protected void RegisterWithMessageService2()
+    protected void RegisterWithMessageService()
     {
-        if (MessageService2.Instance != null)
+        if (MessageService.Instance != null)
         {
-            MessageService2.Instance.RegisterAgent(AgentId, this);
-            Debug.Log($"Agent {AgentId} registered with MessageService2");
+            MessageService.Instance.RegisterAgent(AgentId, this);
+            Debug.Log($"Agent {AgentId} registered with MessageService");
         }
         else
         {
-            Debug.LogError($"MessageService2 instance not found when registering agent {AgentId}");
+            Debug.LogError($"MessageService instance not found when registering agent {AgentId}");
         }
     }
 
@@ -166,7 +166,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         };
         message.Receivers.Add(receiver);
 
-        MessageService2.Instance.SendMessage(message);
+        MessageService.Instance.SendMessage(message);
     }
 
     /// Send a REQUEST message to a specific agent
@@ -181,7 +181,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         };
         message.Receivers.Add(receiver);
 
-        MessageService2.Instance.SendMessage(message);
+        MessageService.Instance.SendMessage(message);
     }
 
     /// Send an AGREE message to a specific agent
@@ -196,7 +196,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         };
         message.Receivers.Add(receiver);
 
-        MessageService2.Instance.SendMessage(message);
+        MessageService.Instance.SendMessage(message);
     }
 
     /// Send a REFUSE message to a specific agent
@@ -211,7 +211,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         };
         message.Receivers.Add(receiver);
 
-        MessageService2.Instance.SendMessage(message);
+        MessageService.Instance.SendMessage(message);
     }
 
     /// Send a NOT_UNDERSTOOD message to a specific agent
@@ -226,7 +226,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         };
         message.Receivers.Add(receiver);
 
-        MessageService2.Instance.SendMessage(message);
+        MessageService.Instance.SendMessage(message);
     }
 
     /// Broadcast a message to all agents except self
@@ -241,7 +241,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         };
 
         // Add all other agents as receivers
-        foreach (var agentId in MessageService2.Instance.GetAllAgentIds())
+        foreach (var agentId in MessageService.Instance.GetAllAgentIds())
         {
             if (agentId != AgentId) // Don't send to self
             {
@@ -251,7 +251,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
 
         if (message.Receivers.Count > 0)
         {
-            MessageService2.Instance.SendMessage(message);
+            MessageService.Instance.SendMessage(message);
         }
     }
 

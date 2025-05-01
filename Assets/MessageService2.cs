@@ -5,17 +5,17 @@ using UnityEngine;
 /// <summary>
 /// Singleton service for handling message passing between agents
 /// </summary>
-public class MessageService2 : MonoBehaviour
+public class MessageService : MonoBehaviour
 {
-    private static MessageService2 _instance;
-    public static MessageService2 Instance
+    private static MessageService _instance;
+    public static MessageService Instance
     {
         get
         {
             if (_instance == null)
             {
                 var go = new GameObject("MessageService");
-                _instance = go.AddComponent<MessageService2>();
+                _instance = go.AddComponent<MessageService>();
                 DontDestroyOnLoad(go);
             }
             return _instance;

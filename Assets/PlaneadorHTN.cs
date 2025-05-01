@@ -10,7 +10,7 @@ public class PlaneadorHTN
     {
         tareas.Clear();
 
-        if (policia.LadronVisto)
+        if (policia.thiefDetected)
         {
             tareas.Enqueue(new TareaPerseguir());
         }

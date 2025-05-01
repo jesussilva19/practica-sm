@@ -5,12 +5,12 @@ public class TareaPatrullar : TareaHTN
 {
     public override bool EsEjecutable(Policia policia)
     {
-        return !policia.LadronVisto;
+        return !policia.thiefDetected;
     }
 
     public override IEnumerator Ejecutar(Policia policia)
     {
-        policia.IniciarPatrulla();
+        policia.ActualizarPatrulla();
         yield return null;
     }
 }

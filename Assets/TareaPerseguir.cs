@@ -6,7 +6,7 @@ public class TareaPerseguir : TareaHTN
 {
     public override bool EsEjecutable(Policia policia)
     {
-        return policia.LadronVisto && policia.thiefTransform != null;
+        return policia.thiefDetected && policia.thiefTransform != null;
     }
 
     public override IEnumerator Ejecutar(Policia policia)

@@ -20,6 +20,8 @@ public class Policia : CommunicationAgent
     public float searchDelayTime = 2f; //Wait time before starting search after losing thief
     public float searchPointWaitTime = 2f; //Time to spend at each search location
 
+    private PlaneadorHTN planeador;
+
     protected override void Awake()
     {
         base.Awake();
@@ -40,6 +42,8 @@ public class Policia : CommunicationAgent
         if (destinos != null && destinos.Length > 0)
         {
             IniciarPatrulla();
+            planeador = new PlaneadorHTN();
+            StartCoroutine(EjecutarPlanPeriodicamente());
         }
         else
         {
@@ -53,7 +57,15 @@ public class Policia : CommunicationAgent
         ActualizarPatrulla();
     }
 
-
+    private IEnumerator EjecutarPlanPeriodicamente()
+    {
+        while (true)
+        {
+            planeador.Planificar(this);
+            yield return StartCoroutine(planeador.EjecutarPlan(this, this));
+            yield return new WaitForSeconds(1f); // Esperar un poco antes de volver a planificar
+        }
+    }
 
     public void IniciarPatrulla()
     {
@@ -80,7 +92,7 @@ public class Policia : CommunicationAgent
     }
 
 
-    private void ActualizarPatrulla()
+    public void ActualizarPatrulla()
     {
         if (!isPatrolling || isSearching || thiefDetected)
             return;
@@ -122,7 +134,7 @@ public class Policia : CommunicationAgent
             PausarPatrulla();
             thiefDetected = true;
             thiefTransform = thief;
-            _navAgent.SetDestination(thief.position);
+            //_navAgent.SetDestination(thief.position);
 
             Debug.Log($"Policia {AgentId}: Ladrón detectado! persiguiendo...");
 
@@ -139,7 +151,7 @@ public class Policia : CommunicationAgent
         if (!isSearching)
         {
             BroadcastThiefLost();// Broadcast ladron perdido
-            StartCoroutine(BuscarYLuegoPatrullar(searchPoints));
+            //StartCoroutine(BuscarYLuegoPatrullar(searchPoints));
         }
     }
 
