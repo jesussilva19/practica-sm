@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class TareaPatrullar : TareaHTN
 {
-    public override bool EsEjecutable(Agente agente)
+    public override bool EsEjecutable(Policia policia)
     {
-        return !agente.ladronDetectado;
+        return !policia.LadronVisto;
     }
 
-    public override IEnumerator Ejecutar(Agente agente)
+    public override IEnumerator Ejecutar(Policia policia)
     {
-        agente.ReanudarPatrulla();
+        policia.IniciarPatrulla();
         yield return null;
     }
 }

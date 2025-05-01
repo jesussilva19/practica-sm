@@ -6,11 +6,11 @@ public class PlaneadorHTN
 {
     private Queue<TareaHTN> tareas = new();
 
-    public void Planificar(Agente agente)
+    public void Planificar(Policia policia)
     {
         tareas.Clear();
 
-        if (agente.ladronDetectado)
+        if (policia.LadronVisto)
         {
             tareas.Enqueue(new TareaPerseguir());
         }
@@ -20,14 +20,14 @@ public class PlaneadorHTN
         }
     }
 
-    public IEnumerator EjecutarPlan(Agente agente, MonoBehaviour contexto)
+    public IEnumerator EjecutarPlan(Policia policia, MonoBehaviour contexto)
     {
         while (tareas.Count > 0)
         {
             var tarea = tareas.Dequeue();
-            if (tarea.EsEjecutable(agente))
+            if (tarea.EsEjecutable(policia))
             {
-                yield return contexto.StartCoroutine(tarea.Ejecutar(agente));
+                yield return contexto.StartCoroutine(tarea.Ejecutar(policia));
             }
         }
     }

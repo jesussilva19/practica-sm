@@ -4,15 +4,15 @@ using UnityEngine.AI;
 
 public class TareaPerseguir : TareaHTN
 {
-    public override bool EsEjecutable(Agente agente)
+    public override bool EsEjecutable(Policia policia)
     {
-        return agente.ladronDetectado && agente.ladronTransform != null;
+        return policia.LadronVisto && policia.thiefTransform != null;
     }
 
-    public override IEnumerator Ejecutar(Agente agente)
+    public override IEnumerator Ejecutar(Policia policia)
     {
-        agente.PausarPatrulla();
-        agente.GetComponent<NavMeshAgent>().SetDestination(agente.ladronTransform.position);
+        policia.PausarPatrulla();
+        policia.GetComponent<NavMeshAgent>().SetDestination(policia.thiefTransform.position);
         yield return null;
     }
 }

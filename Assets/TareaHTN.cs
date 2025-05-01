@@ -2,6 +2,6 @@ using System.Collections;
 
 public abstract class TareaHTN
 {
-    public abstract bool EsEjecutable(Agente agente);
-    public abstract IEnumerator Ejecutar(Agente agente);
+    public abstract bool EsEjecutable(Policia policia);
+    public abstract IEnumerator Ejecutar(Policia policia);
 }

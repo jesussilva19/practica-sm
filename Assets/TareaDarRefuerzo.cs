@@ -12,25 +12,25 @@ public class TareaDarRefuerzo : TareaHTN
         posicionRefuerzo = posicion;
     }
 
-    public override bool EsEjecutable(Agente agente)
+    public override bool EsEjecutable(Policia policia)
     {
-        // Siempre se puede intentar acudir si no está ocupado
+        // Siempre se puede intentar acudir si no estï¿½ ocupado
         return true;
     }
 
-    public override IEnumerator Ejecutar(Agente agente)
+    public override IEnumerator Ejecutar(Policia policia)
     {
-        agente.PausarPatrulla();
-        agente.GetComponent<NavMeshAgent>().SetDestination(posicionRefuerzo);
+        policia.PausarPatrulla();
+        policia.GetComponent<NavMeshAgent>().SetDestination(posicionRefuerzo);
 
-        while (agente.GetComponent<NavMeshAgent>().pathPending || agente.GetComponent<NavMeshAgent>().remainingDistance > 0.5f)
+        while (policia.GetComponent<NavMeshAgent>().pathPending || policia.GetComponent<NavMeshAgent>().remainingDistance > 0.5f)
         {
             yield return null;
         }
 
-        Debug.Log($"{agente.AgentId}: Llegó a la zona de refuerzo.");
+        Debug.Log($"{policia.AgentId}: Llegï¿½ a la zona de refuerzo.");
         yield return new WaitForSeconds(3f); // Simular espera
 
-        agente.ReanudarPatrulla();
+        policia.IniciarPatrulla();
     }
 }

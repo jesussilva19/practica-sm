@@ -93,9 +93,7 @@ public class Policia : CommunicationAgent
         }
     }
 
-    /// <summary>
     /// Move to the next patrol waypoint
-    /// </summary>
     private void IrAlSiguienteDestino()
     {
         if (destinos == null || destinos.Length == 0)
