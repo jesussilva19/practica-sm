@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class TareaPerseguir : TareaHTN
@@ -12,13 +13,6 @@ public class TareaPerseguir : TareaHTN
     {
         agente.PausarPatrulla();
         agente.GetComponent<NavMeshAgent>().SetDestination(agente.ladronTransform.position);
-
-        while (agente.ladronDetectado)
-        {
-            agente.GetComponent<NavMeshAgent>().SetDestination(agente.ladronTransform.position);
-            yield return null;
-        }
-
-        agente.ReanudarPatrulla();
+        yield return null;
     }
 }

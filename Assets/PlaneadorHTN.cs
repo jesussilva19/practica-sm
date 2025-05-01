@@ -26,7 +26,9 @@ public class PlaneadorHTN
         {
             var tarea = tareas.Dequeue();
             if (tarea.EsEjecutable(agente))
+            {
                 yield return contexto.StartCoroutine(tarea.Ejecutar(agente));
+            }
         }
     }
 }
