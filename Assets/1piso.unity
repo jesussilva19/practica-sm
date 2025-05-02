@@ -2762,16 +2762,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinos:
-  - {fileID: 697279568}
-  - {fileID: 1724911712}
-  - {fileID: 486498900}
-  - {fileID: 367068624}
-  - {fileID: 51879157}
-  patrullando: 1
-  ladronDetectado: 0
-  ladronTransform: {fileID: 0}
-  AgentId: policia4
 --- !u!65 &507158428
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5508,15 +5498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinos:
-  - {fileID: 1946342598}
-  - {fileID: 1317594081}
-  - {fileID: 147735422}
-  - {fileID: 378571281}
-  patrullando: 1
-  ladronDetectado: 0
-  ladronTransform: {fileID: 0}
-  AgentId: policia2
 --- !u!65 &956913520
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5760,9 +5741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f22cec9f5c74f99b68aba00fd4514e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sensibilidad: 300
-  playerBody: {fileID: 1745100294}
-  xRotacion: 100
 --- !u!1 &989213036
 GameObject:
   m_ObjectHideFlags: 0
@@ -5952,14 +5930,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinos:
-  - {fileID: 1874217867}
-  - {fileID: 1171407711}
-  - {fileID: 1144826267}
-  patrullando: 1
-  ladronDetectado: 0
-  ladronTransform: {fileID: 0}
-  AgentId: policia3
 --- !u!65 &993406313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7364,15 +7334,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinos:
-  - {fileID: 625251700}
-  - {fileID: 1233262435}
-  - {fileID: 697279568}
-  - {fileID: 51879157}
-  patrullando: 1
-  ladronDetectado: 0
-  ladronTransform: {fileID: 0}
-  AgentId: policia5
 --- !u!65 &1227226451
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8653,14 +8614,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533b89aaa32e6e546a42928248151885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinos:
-  - {fileID: 367068624}
-  - {fileID: 51879157}
-  - {fileID: 1874217867}
-  patrullando: 1
-  ladronDetectado: 0
-  ladronTransform: {fileID: 0}
-  AgentId: policia1
 --- !u!65 &1451659306
 BoxCollider:
   m_ObjectHideFlags: 0

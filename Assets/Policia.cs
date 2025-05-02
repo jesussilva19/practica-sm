@@ -134,7 +134,6 @@ public class Policia : CommunicationAgent
     {
         if (_navAgent != null && _navAgent.isOnNavMesh)
         {
-            PausarPatrulla();
             thiefDetected = true;
             thiefTransform = thief;
             //_navAgent.SetDestination(thief.position);
