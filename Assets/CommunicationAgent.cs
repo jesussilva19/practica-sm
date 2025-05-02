@@ -229,6 +229,20 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         MessageService.Instance.SendMessage(message);
     }
 
+    public void SendPerformative(string receiver, string content, string performative, string conversationId = null)
+    {
+        var msg = new FipaAclMessage
+        {
+            Sender = AgentId,
+            Receivers = new List<string> { receiver },
+            Content = content,
+            Performative = performative,
+            ConversationId = conversationId ?? System.Guid.NewGuid().ToString()
+        };
+        MessageService.Instance.SendMessage(msg);
+    }
+
+
     /// Broadcast a message to all agents except self
     protected void BroadcastMessage(string content, string performative = FipaPerformatives.INFORM)
     {
