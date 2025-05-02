@@ -12,7 +12,7 @@ public class DetectorPresencia : MonoBehaviour
         // Verificar configuración
         if (puerta == null)
         {
-            Debug.LogError("¡Debe asignarse una puerta al detector!");
+            //Debug.LogError("¡Debe asignarse una puerta al detector!");
             // Intentar encontrar una puerta cercana
             puerta = FindObjectOfType<PuertaCorredera>();
         }
@@ -21,20 +21,20 @@ public class DetectorPresencia : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col == null)
         {
-            Debug.LogError("¡El detector debe tener un collider!");
+            //Debug.LogError("¡El detector debe tener un collider!");
             col = gameObject.AddComponent<BoxCollider>();
         }
 
         if (!col.isTrigger)
         {
-            Debug.LogWarning("El collider del detector debe estar marcado como trigger");
+            //Debug.LogWarning("El collider del detector debe estar marcado como trigger");
             col.isTrigger = true;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Objeto detectado: " + other.gameObject.name + " con tag: " + other.tag);
+        //Debug.Log("Objeto detectado: " + other.gameObject.name + " con tag: " + other.tag);
 
         foreach (string etiqueta in etiquetasDetectar)
         {
@@ -43,7 +43,7 @@ public class DetectorPresencia : MonoBehaviour
                 if (puerta != null)
                 {
                     puerta.PersonaDetectada(true);
-                    Debug.Log("Persona detectada - ENTRANDO");
+                    //Debug.Log("Persona detectada - ENTRANDO");
                 }
                 break;
             }
@@ -59,7 +59,7 @@ public class DetectorPresencia : MonoBehaviour
                 if (puerta != null)
                 {
                     puerta.PersonaDetectada(false);
-                    Debug.Log("Persona detectada - SALIENDO");
+                    //Debug.Log("Persona detectada - SALIENDO");
                 }
                 break;
             }

@@ -9,16 +9,20 @@ public class PlaneadorHTN
     public void Planificar(Policia policia)
     {
         tareas.Clear();
+        Debug.Log($"[HTN] Planificando para {policia.AgentId}. thiefDetected={policia.thiefDetected}, thiefTransform={policia.thiefTransform}");
 
-        if (policia.thiefDetected)
+        if (policia.thiefDetected && policia.thiefTransform != null)
         {
+            Debug.Log("[HTN] Añadiendo tarea de PERSEGUIR");
             tareas.Enqueue(new TareaPerseguir());
         }
         else
         {
+            Debug.Log("[HTN] Añadiendo tarea de PATRULLAR");
             tareas.Enqueue(new TareaPatrullar());
         }
     }
+
 
     public IEnumerator EjecutarPlan(Policia policia, MonoBehaviour contexto)
     {

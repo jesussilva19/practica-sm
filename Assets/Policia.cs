@@ -55,15 +55,18 @@ public class Policia : CommunicationAgent
     {
         base.Update();
         ActualizarPatrulla();
+        
+
     }
 
     private IEnumerator EjecutarPlanPeriodicamente()
     {
         while (true)
         {
-            planeador.Planificar(this);
+            Debug.Log($"[HTN] Planificando para {AgentId} - thiefDetected={thiefDetected}");
+            planeador.Planificar(this);  
             yield return StartCoroutine(planeador.EjecutarPlan(this, this));
-            yield return new WaitForSeconds(1f); // Esperar un poco antes de volver a planificar
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -137,6 +140,8 @@ public class Policia : CommunicationAgent
             //_navAgent.SetDestination(thief.position);
 
             Debug.Log($"Policia {AgentId}: Ladrón detectado! persiguiendo...");
+            Debug.Log($"[DEBUG] thiefDetected={thiefDetected}, thiefTransform={(thiefTransform != null ? thiefTransform.name : "null")}");
+
 
             // Inform other agents about thief sighting
             BroadcastThiefSighting(thief.position);
@@ -228,7 +233,7 @@ public class Policia : CommunicationAgent
                 break;
 
             case "THIEF_LOST":
-                Debug.Log($"Policia {AgentId}: Received report that thief was lost by {message.Sender}");
+                //Debug.Log($"Policia {AgentId}: Received report that thief was lost by {message.Sender}");
                 break;
 
             case "THIEF_CAUGHT":
@@ -257,9 +262,11 @@ public class Policia : CommunicationAgent
 
                 // Decide whether to respond based on distance
                 float distance = Vector3.Distance(transform.position, thiefPosition);
-                if (distance < 50f) // Response radius
+                //Debug.Log($"Policia {AgentId}: Recibido aviso de ladrón en {thiefPosition}");
+
+                if (distance < 1f) // Response radius
                 {
-                    Debug.Log($"Policia {AgentId}: Responding to thief sighting by {message.Sender}");
+                    //Debug.Log($"Policia {AgentId}: Responding to thief sighting by {message.Sender}");
 
                     // Go to the reported position
                     PausarPatrulla();
@@ -282,7 +289,7 @@ public class Policia : CommunicationAgent
         // If we were pursuing the thief, return to patrol
         if (thiefDetected)
         {
-            Debug.Log($"Policia {AgentId}: Received notification that thief was caught by {message.Sender}");
+            //Debug.Log($"Policia {AgentId}: Received notification that thief was caught by {message.Sender}");
             thiefDetected = false;
             IniciarPatrulla();
         }

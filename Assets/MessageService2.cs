@@ -61,7 +61,7 @@ public class MessageService : MonoBehaviour
         if (_agents.ContainsKey(agentId))
         {
             _agents.Remove(agentId);
-            Debug.Log($"Agent {agentId} unregistered from MessageService");
+            //Debug.Log($"Agent {agentId} unregistered from MessageService");
         }
     }
 
@@ -95,7 +95,7 @@ public class MessageService : MonoBehaviour
             if (_agents.TryGetValue(receiver, out ICommunicationAgent agent))
             {
                 agent.ReceiveMessage(message);
-                Debug.Log($"Message from {message.Sender} delivered to {receiver}: {message.Performative} - {message.Content}");
+                //Debug.Log($"Message from {message.Sender} delivered to {receiver}: {message.Performative} - {message.Content}");
             }
             else
             {

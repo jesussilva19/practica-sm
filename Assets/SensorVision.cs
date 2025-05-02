@@ -33,7 +33,7 @@ public class Persecucion : MonoBehaviour
         }
     }
 
-    private bool TieneLineaDeVision()
+    public bool TieneLineaDeVision()
     {
         Vector3 origen = agente.transform.position + Vector3.up * 1f;
         Vector3 direccion = (ladron.position - origen).normalized;
