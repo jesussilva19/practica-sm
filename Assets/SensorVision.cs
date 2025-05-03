@@ -47,6 +47,16 @@ public class Persecucion : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            agente.ladronViendo = false;
+            agente.ladronPerdido = true;
+            agente.ladronVisto = false;
+        }
+    }
+
 
     public bool TieneLineaDeVision(Transform ladron)
     {

@@ -16,7 +16,7 @@ public class PlaneadorHTN
             Debug.Log("[HTN] A�adiendo tarea de PERSEGUIR");
             tareas.Enqueue(new TareaPerseguir());
         }
-        else
+        if (!policia.ladronViendo && !policia.isSearching)
         {
             Debug.Log("[HTN] A�adiendo tarea de PATRULLAR");
             tareas.Enqueue(new TareaPatrullar());

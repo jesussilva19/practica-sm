@@ -184,7 +184,6 @@ public class Policia : CommunicationAgent
             if (!ocupado)
             {
                 auctionsParticipating.Clear();
-                ocupado = true;  // Set as busy for the auction
                 planeador.tareas.Clear();  // Clear any existing tasks
                 planeador.tareas.Enqueue(new TareaPerseguir());
                 //StartAuction("AUCTION_INTERCEPT");
@@ -202,17 +201,19 @@ public class Policia : CommunicationAgent
     {
         Debug.Log($"Policia {AgentId}: Ladrón perdido");
         ladronViendo = false;
+        ladronVisto = false;
         ladronPerdido = true;
+        ocupado = false;
+        isPatrolling = true; // Asegúrate de que el agente pueda patrullar
+        isSearching = false;
 
         // Notificar a otros policías
         if (!isSearching)
             BroadcastThiefLost();
 
-        // Iniciar búsqueda si hay puntos y no estamos ocupados
-        if (searchPoints != null && searchPoints.Count > 0 && !ocupado)
-        {
-            StartCoroutine(BuscarYLuegoPatrullar(searchPoints));
-        }
+        planeador.tareas.Clear();  // Clear any existing tasks
+        planeador.tareas.Enqueue(new TareaPatrullar());    
+        _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
     }
 
     public void DetenerLadron()

@@ -6,7 +6,7 @@ public class TareaPatrullar : TareaHTN
     public override bool EsEjecutable(Policia policia)
     {
         // The task is executable only if the police officer is not seeing the thief and is not busy
-        return !policia.ladronViendo && !policia.ocupado && policia.isPatrolling && !policia.isSearching;
+        return !policia.ladronViendo && !policia.ocupado ;
     }
 
     public override IEnumerator Ejecutar(Policia policia)
