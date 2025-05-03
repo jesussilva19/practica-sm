@@ -17,7 +17,7 @@ public class Persecucion : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && TieneLineaDeVision(other.transform))
         {
             agente.thiefTransform = other.transform;
 
@@ -33,17 +33,17 @@ public class Persecucion : MonoBehaviour
         {
             agente.thiefTransform = other.transform;
 
-            /*if (!TieneLineaDeVision(other.transform))
+            if (!TieneLineaDeVision(other.transform))
             {
                 agente.ladronViendo = false;
                 agente.ladronPerdido = true;
                 agente.ladronVisto = false;
             }
             else
-            {*/
+            {
                 agente.ladronPerdido = false;
                 agente.ladronViendo = true;
-            //}
+            }
         }
     }
 
@@ -55,11 +55,11 @@ public class Persecucion : MonoBehaviour
         float distancia = Vector3.Distance(agente.transform.position, ladron.position);
         float angulo = Vector3.Angle(agente.transform.forward, direccion);
 
-        if (angulo > 300f) return false;
+        if (angulo > 180f) return false;
         
-        float distanciaMaxima = distancia * 3.0f; 
+        float distanciaMaxima = distancia * 1.0f; 
 
-        int mascara = LayerMask.GetMask("Obstaculos", "Ladron");
+        int mascara = LayerMask.GetMask("Obstaculos", "Player");
         if (Physics.Raycast(origen, direccion, out RaycastHit hit, distanciaMaxima, mascara))
         {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Obstaculos"))
