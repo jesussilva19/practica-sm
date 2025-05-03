@@ -10,6 +10,7 @@ public class TareaPuerta : TareaHTN
 
     public override IEnumerator Ejecutar(Policia policia)
     {
+        policia.ocupado = true;
         var nav = policia.GetComponent<NavMeshAgent>();
         nav.SetDestination(_target);
         while (nav.pathPending || nav.remainingDistance > 0.5f) yield return null;

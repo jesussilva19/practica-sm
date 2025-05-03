@@ -25,6 +25,7 @@ public class TareaOro : TareaHTN
     public override IEnumerator Ejecutar(Policia policia)
     {
         Debug.Log($"[HTN] TareaOro: {policia.AgentId} moving to gold at {_target}");
+        policia.ocupado = true;
         // Ensure NavMeshAgent is available
         var nav = policia.GetComponent<NavMeshAgent>();
         if (nav == null)

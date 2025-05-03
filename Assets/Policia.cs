@@ -181,19 +181,18 @@ public class Policia : CommunicationAgent
             BroadcastThiefSighting(thief.position);
 
             // Iniciar subasta para interceptar solo si no estamos ocupados
-            if (!ocupado)
-            {
-                auctionsParticipating.Clear();
-                planeador.tareas.Clear();  // Clear any existing tasks
-                planeador.tareas.Enqueue(new TareaPerseguir());
-                //StartAuction("AUCTION_INTERCEPT");
-                StartAuction("AUCTION_GOLD");
-                StartAuction("AUCTION_DOOR");
-                Debug.LogError("EN TEORIA PERSEGUIR ENCOLADA");
-                Debug.LogError($"{planeador.tareas.First().GetType()}");
-                _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
 
-            }
+            auctionsParticipating.Clear();
+            planeador.tareas.Clear();  // Clear any existing tasks
+            planeador.tareas.Enqueue(new TareaPerseguir());
+            StartAuction("AUCTION_INTERCEPT");
+            StartAuction("AUCTION_GOLD");
+            StartAuction("AUCTION_DOOR");
+            Debug.LogError("EN TEORIA PERSEGUIR ENCOLADA");
+            Debug.LogError($"{planeador.tareas.First().GetType()}");
+            _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
+
+            
         }
     }
 
@@ -206,6 +205,8 @@ public class Policia : CommunicationAgent
         ocupado = false;
         isPatrolling = true; // Asegúrate de que el agente pueda patrullar
         isSearching = false;
+
+        destinos = searchPoints.ToArray();
 
         // Notificar a otros policías
         if (!isSearching)
@@ -258,10 +259,24 @@ public class Policia : CommunicationAgent
 
     public void StartAuction(string auctionId)
     {
-        Vector3 target = auctionId == "AUCTION_INTERCEPT"
-            ? thiefTransform.position
-            : (auctionId == "AUCTION_GOLD" ? goldPoint.position : doorPoint.position);
-
+        Vector3 target;
+        if (auctionId == "AUCTION_INTERCEPT")
+        {
+            target = thiefTransform.position;
+        }
+        else if (auctionId == "AUCTION_GOLD")
+        {
+            target = goldPoint.position;
+        }
+        else if (auctionId == "AUCTION_DOOR")
+        {
+            target = doorPoint.position;
+        }
+        else
+        {
+            Debug.LogError($"[{AgentId}] Tipo de subasta desconocido: {auctionId}");
+            return;
+        }
         var state = new AuctionState { AuctionId = auctionId, Target = target, StartTime = Time.time };
         ActiveAuctions[auctionId] = state;
 

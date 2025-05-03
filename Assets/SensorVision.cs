@@ -31,6 +31,7 @@ public class Persecucion : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.LogError($"AAAAAAAA {agente.AgentId}");
             agente.thiefTransform = other.transform;
 
             if (!TieneLineaDeVision(other.transform))
@@ -54,6 +55,11 @@ public class Persecucion : MonoBehaviour
             agente.ladronViendo = false;
             agente.ladronPerdido = true;
             agente.ladronVisto = false;
+            List<Transform> puntosBusqueda = new List<Transform>(other.transform.GetComponentsInChildren<Transform>());
+            puntosBusqueda.AddRange(agente.destinos);
+            agente.LadronPerdido(puntosBusqueda);
+
+
         }
     }
 
