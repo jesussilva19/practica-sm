@@ -50,7 +50,7 @@ public class Persecucion : MonoBehaviour
 
     public bool TieneLineaDeVision(Transform ladron)
     {
-        Vector3 origen = agente.transform.position + Vector3.up * 1f;
+        Vector3 origen = agente.transform.position + Vector3.up * 1.2f;
         Vector3 direccion = (ladron.position - origen).normalized;
         float distancia = Vector3.Distance(agente.transform.position, ladron.position);
         float angulo = Vector3.Angle(agente.transform.forward, direccion);
