@@ -7,7 +7,7 @@ public class TareaPerseguir : TareaHTN
     public override bool EsEjecutable(Policia policia)
     {
         // La tarea es ejecutable si el policía está viendo al ladrón, tiene su referencia y no está ocupado
-        return policia.ladronViendo && policia.thiefTransform != null && !policia.ocupado;
+        return policia.ladronViendo && policia.thiefTransform != null;
     }
 
     public override IEnumerator Ejecutar(Policia policia)
