@@ -50,14 +50,14 @@ public class Persecucion : MonoBehaviour
 
     public bool TieneLineaDeVision(Transform ladron)
     {
-        Vector3 origen = agente.transform.position + Vector3.up * 1.2f;
+        Vector3 origen = agente.transform.position + Vector3.up * 1.0f;
         Vector3 direccion = (ladron.position - origen).normalized;
         float distancia = Vector3.Distance(agente.transform.position, ladron.position);
         float angulo = Vector3.Angle(agente.transform.forward, direccion);
 
         if (angulo > 180f) return false;
         
-        float distanciaMaxima = distancia * 1.0f; 
+        float distanciaMaxima = distancia * 1.2f; 
 
         int mascara = LayerMask.GetMask("Obstaculos", "Player");
         if (Physics.Raycast(origen, direccion, out RaycastHit hit, distanciaMaxima, mascara))
