@@ -5,7 +5,7 @@ public class TareaPatrullar : TareaHTN
 {
     public override bool EsEjecutable(Policia policia)
     {
-        return !policia.thiefDetected;
+        return !policia.ladronViendo && !policia.ocupado;
     }
 
     public override IEnumerator Ejecutar(Policia policia)

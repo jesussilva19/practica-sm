@@ -9,16 +9,16 @@ public class PlaneadorHTN
     public void Planificar(Policia policia)
     {
         tareas.Clear();
-        Debug.Log($"[HTN] Planificando para {policia.AgentId}. thiefDetected={policia.thiefDetected}, thiefTransform={policia.thiefTransform}");
+        Debug.Log($"[HTN] Planificando para {policia.AgentId}. thiefDetected={policia.ladronViendo}, thiefTransform={policia.thiefTransform}");
 
-        if (policia.thiefDetected && policia.thiefTransform != null)
+        if (policia.ladronViendo && policia.thiefTransform != null)
         {
-            Debug.Log("[HTN] Añadiendo tarea de PERSEGUIR");
+            Debug.Log("[HTN] Aï¿½adiendo tarea de PERSEGUIR");
             tareas.Enqueue(new TareaPerseguir());
         }
         else
         {
-            Debug.Log("[HTN] Añadiendo tarea de PATRULLAR");
+            Debug.Log("[HTN] Aï¿½adiendo tarea de PATRULLAR");
             tareas.Enqueue(new TareaPatrullar());
         }
     }

@@ -19,7 +19,7 @@ public class TareaOro : TareaHTN
     public override bool EsEjecutable(Policia policia)
     {
         // Task is always executable when assigned
-        return true;
+        return  true;
     }
 
     public override IEnumerator Ejecutar(Policia policia)

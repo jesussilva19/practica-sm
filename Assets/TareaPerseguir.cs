@@ -7,7 +7,7 @@ public class TareaPerseguir : TareaHTN
 {
     public override bool EsEjecutable(Policia policia)
     {
-        return policia.thiefDetected && policia.thiefTransform != null;
+        return policia.ladronViendo && policia.thiefTransform != null && !policia.ocupado;
     }
 
     public override IEnumerator Ejecutar(Policia policia)
@@ -17,7 +17,7 @@ public class TareaPerseguir : TareaHTN
 
         NavMeshAgent agent = policia.GetComponent<NavMeshAgent>();
 
-        while (policia.thiefDetected && policia.thiefTransform != null)
+        while (policia.ladronViendo && policia.thiefTransform != null)
         {
             if (agent != null && agent.isOnNavMesh)
             {

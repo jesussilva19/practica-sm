@@ -1301,6 +1301,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 16252154}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &171815618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 171815619}
+  m_Layer: 0
+  m_Name: SALIDA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &171815619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171815618}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -86.6, y: -5.8, z: -82.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079615718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &180301580
 GameObject:
   m_ObjectHideFlags: 0
@@ -2901,6 +2932,9 @@ MonoBehaviour:
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
+  goldPoint: {fileID: 1339606228}
+  doorPoint: {fileID: 171815619}
+  proposalTimeout: 1
 --- !u!1 &510544883
 GameObject:
   m_ObjectHideFlags: 0
@@ -5636,6 +5670,9 @@ MonoBehaviour:
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
+  goldPoint: {fileID: 1339606228}
+  doorPoint: {fileID: 171815619}
+  proposalTimeout: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -6067,6 +6104,9 @@ MonoBehaviour:
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
+  goldPoint: {fileID: 1339606228}
+  doorPoint: {fileID: 171815619}
+  proposalTimeout: 1
 --- !u!1 &1007289365
 GameObject:
   m_ObjectHideFlags: 0
@@ -7472,6 +7512,9 @@ MonoBehaviour:
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
+  goldPoint: {fileID: 1339606228}
+  doorPoint: {fileID: 171815619}
+  proposalTimeout: 1
 --- !u!1 &1233262434
 GameObject:
   m_ObjectHideFlags: 0
@@ -8455,6 +8498,37 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &1339606227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1339606228}
+  m_Layer: 0
+  m_Name: ORO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1339606228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339606227}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -143.5, y: -5.8, z: 82.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2079615718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1402187914
 GameObject:
   m_ObjectHideFlags: 0
@@ -8773,6 +8847,9 @@ MonoBehaviour:
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
+  goldPoint: {fileID: 1339606228}
+  doorPoint: {fileID: 171815619}
+  proposalTimeout: 1
 --- !u!1 &1483048645
 GameObject:
   m_ObjectHideFlags: 0
@@ -11928,6 +12005,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 625251700}
+  - {fileID: 1339606228}
+  - {fileID: 171815619}
   - {fileID: 1233262435}
   - {fileID: 697279568}
   - {fileID: 1171407711}

@@ -16,22 +16,35 @@ public class Persecucion : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        agente.thiefTransform = other.transform;
+
         if (other.transform == ladron && TieneLineaDeVision())
         {
-            agente.LadronVisto(ladron);
+            agente.ladronVisto = true;
+            agente.ladronViendo = true;
+            agente.LadronVisto(other.transform);
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
+        agente.thiefTransform = other.transform;
         if (other.transform == ladron)
         {
-            if (TieneLineaDeVision())
-                agente.LadronVisto(ladron);
+            if (!TieneLineaDeVision())
+            {
+                agente.ladronViendo = false;
+                agente.ladronPerdido = true;
+                agente.ladronVisto = false;
+            }
             else
-                agente.LadronPerdido(new List<Transform>(puntosBusqueda));
+            {
+                agente.ladronPerdido = false;
+                agente.ladronViendo = true;
+            }
         }
     }
+
 
     public bool TieneLineaDeVision()
     {
