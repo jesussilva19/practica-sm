@@ -2921,14 +2921,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AgentId: policia4
+  _navAgent: {fileID: 0}
   destinos:
   - {fileID: 697279568}
   - {fileID: 1724911712}
   - {fileID: 486498900}
   - {fileID: 367068624}
   - {fileID: 51879157}
+  _currentWaypointIndex: 0
   isPatrolling: 1
-  thiefDetected: 0
+  isSearching: 0
+  ocupado: 0
+  ladronVisto: 0
+  ladronViendo: 0
+  ladronPerdido: 0
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
@@ -5660,13 +5666,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AgentId: policia2
+  _navAgent: {fileID: 0}
   destinos:
   - {fileID: 1946342598}
   - {fileID: 1317594081}
   - {fileID: 147735422}
   - {fileID: 378571281}
+  _currentWaypointIndex: 0
   isPatrolling: 1
-  thiefDetected: 0
+  isSearching: 0
+  ocupado: 0
+  ladronVisto: 0
+  ladronViendo: 0
+  ladronPerdido: 0
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
@@ -6095,12 +6107,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AgentId: policia3
+  _navAgent: {fileID: 0}
   destinos:
   - {fileID: 1874217867}
   - {fileID: 1171407711}
   - {fileID: 1144826267}
+  _currentWaypointIndex: 0
   isPatrolling: 1
-  thiefDetected: 0
+  isSearching: 0
+  ocupado: 0
+  ladronVisto: 0
+  ladronViendo: 0
+  ladronPerdido: 0
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
@@ -7502,13 +7520,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AgentId: policia5
+  _navAgent: {fileID: 0}
   destinos:
   - {fileID: 625251700}
   - {fileID: 1233262435}
   - {fileID: 697279568}
   - {fileID: 51879157}
+  _currentWaypointIndex: 0
   isPatrolling: 1
-  thiefDetected: 0
+  isSearching: 0
+  ocupado: 0
+  ladronVisto: 0
+  ladronViendo: 0
+  ladronPerdido: 0
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2
@@ -8838,12 +8862,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AgentId: policia1
+  _navAgent: {fileID: 0}
   destinos:
   - {fileID: 367068624}
   - {fileID: 51879157}
   - {fileID: 1874217867}
+  _currentWaypointIndex: 0
   isPatrolling: 1
-  thiefDetected: 0
+  isSearching: 0
+  ocupado: 0
+  ladronVisto: 0
+  ladronViendo: 0
+  ladronPerdido: 0
   thiefTransform: {fileID: 0}
   searchDelayTime: 2
   searchPointWaitTime: 2

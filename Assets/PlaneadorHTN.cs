@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlaneadorHTN
 {
-    private Queue<TareaHTN> tareas = new();
+    public Queue<TareaHTN> tareas = new();
 
     public void Planificar(Policia policia)
     {
         tareas.Clear();
         Debug.Log($"[HTN] Planificando para {policia.AgentId}. thiefDetected={policia.ladronViendo}, thiefTransform={policia.thiefTransform}");
 
-        if (policia.ladronViendo && policia.thiefTransform != null)
+        if (policia.ladronViendo)
         {
             Debug.Log("[HTN] A�adiendo tarea de PERSEGUIR");
             tareas.Enqueue(new TareaPerseguir());

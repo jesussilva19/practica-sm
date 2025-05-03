@@ -16,10 +16,11 @@ public class Persecucion : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        agente.thiefTransform = other.transform;
 
-        if (other.transform == ladron && TieneLineaDeVision())
+        if (other.CompareTag("Player") && TieneLineaDeVision())
         {
+            agente.thiefTransform = other.transform;
+
             agente.ladronVisto = true;
             agente.ladronViendo = true;
             agente.LadronVisto(other.transform);
@@ -28,9 +29,10 @@ public class Persecucion : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        agente.thiefTransform = other.transform;
-        if (other.transform == ladron)
+        if (other.CompareTag("Player"))
         {
+            agente.thiefTransform = other.transform;
+
             if (!TieneLineaDeVision())
             {
                 agente.ladronViendo = false;

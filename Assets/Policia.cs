@@ -70,10 +70,6 @@ public class Policia : CommunicationAgent
     protected override void Update()
     {
         base.Update();
-        if (planeador != null)
-        {
-            planeador.Planificar(this);
-        }
         // Puede añadir lógica adicional aquí si lo necesita
     }
 
@@ -157,7 +153,7 @@ public class Policia : CommunicationAgent
                 planeador.Planificar(this);
                 yield return StartCoroutine(planeador.EjecutarPlan(this, this));
             }
-
+            StartCoroutine(planeador.EjecutarPlan(this, this));
             yield return new WaitForSeconds(1f);
         }
     }
@@ -179,7 +175,6 @@ public class Policia : CommunicationAgent
                 Debug.Log($"Policia {AgentId}: Interrumpiendo tarea actual para perseguir al ladrón");
                 // Don't set ocupado to false here as the task should handle the cleanup
             }
-            _navAgent.SetDestination(thief.position);
 
             // Broadcast a otros policías
             Debug.Log($"Policia {AgentId}: Ladrón detectado en {thief.position}! iniciando subastas...");
@@ -189,7 +184,13 @@ public class Policia : CommunicationAgent
             if (!ocupado)
             {
                 auctionsParticipating.Clear();
-                StartAuction("AUCTION_INTERCEPT");
+                ocupado = true;  // Set as busy for the auction
+                planeador.tareas.Clear();  // Clear any existing tasks
+                planeador.tareas.Enqueue(new TareaPerseguir());
+                Debug.LogError("EN TEORIA PERSEGUIR ENCOLADA");
+                Debug.LogError($"{planeador.tareas.First().GetType()}");
+                _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
+                //StartAuction("AUCTION_INTERCEPT");
                 StartAuction("AUCTION_GOLD");
                 StartAuction("AUCTION_DOOR");
             }
