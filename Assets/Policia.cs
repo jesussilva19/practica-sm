@@ -187,12 +187,13 @@ public class Policia : CommunicationAgent
                 ocupado = true;  // Set as busy for the auction
                 planeador.tareas.Clear();  // Clear any existing tasks
                 planeador.tareas.Enqueue(new TareaPerseguir());
-                Debug.LogError("EN TEORIA PERSEGUIR ENCOLADA");
-                Debug.LogError($"{planeador.tareas.First().GetType()}");
-                _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
                 //StartAuction("AUCTION_INTERCEPT");
                 StartAuction("AUCTION_GOLD");
                 StartAuction("AUCTION_DOOR");
+                Debug.LogError("EN TEORIA PERSEGUIR ENCOLADA");
+                Debug.LogError($"{planeador.tareas.First().GetType()}");
+                _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
+
             }
         }
     }

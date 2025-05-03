@@ -36,12 +36,12 @@ public class TareaPerseguir : TareaHTN
             }
 
             // Verificar si el policía está lo suficientemente cerca del ladrón para detenerlo
-            if (Vector3.Distance(policia.transform.position, policia.thiefTransform.position) <= 1.5f)
+            /*if (Vector3.Distance(policia.transform.position, policia.thiefTransform.position) <= 1.5f)
             {
                 Debug.Log($"Policia {policia.AgentId}: Ladrón alcanzado. Deteniendo persecución.");
                 policia.DetenerLadron();
                 yield break;
-            }
+            }*/
 
             yield return new WaitForSeconds(0.2f); // Actualiza cada 0.2 segundos
         }
