@@ -55,6 +55,19 @@ public class TareaBuscar : TareaHTN
         }
 
         Debug.Log($"[HTN] TareaBuscar: {policia.AgentId} search complete, resuming patrol");
-        policia.IniciarPatrulla();
+        if (policia.destinos == null || policia.destinos.Length == 0) yield return null;
+        if (policia.ocupado) yield return null;  // Can't patrol if busy
+
+        policia.isPatrolling = true;
+        if (policia.destinos == null || policia.destinos.Length == 0) yield return null;
+        policia._currentWaypointIndex = (policia._currentWaypointIndex + 1) % policia.destinos.Length;
+        var next = policia.destinos[policia._currentWaypointIndex];
+        if (next != null && policia._navAgent != null && policia._navAgent.isOnNavMesh)
+        {
+            policia._navAgent.SetDestination(next.position);
+            Debug.Log($"Policia {policia.AgentId}: Moving to waypoint {policia._currentWaypointIndex}");
+        }
+        Debug.Log($"Policia {policia.AgentId}: Comenzando patrulla");
+
     }
 }

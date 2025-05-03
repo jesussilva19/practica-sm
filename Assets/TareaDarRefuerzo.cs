@@ -20,8 +20,10 @@ public class TareaDarRefuerzo : TareaHTN
 
     public override IEnumerator Ejecutar(Policia policia)
     {
-        policia.PausarPatrulla();
-        policia.GetComponent<NavMeshAgent>().SetDestination(posicionRefuerzo);
+        policia.isPatrolling = false;
+        if (policia._navAgent != null && policia._navAgent.isOnNavMesh)
+            policia._navAgent.ResetPath();
+        Debug.Log($"Policia {policia.AgentId}: Pausando patrulla"); policia.GetComponent<NavMeshAgent>().SetDestination(posicionRefuerzo);
 
         while (policia.GetComponent<NavMeshAgent>().pathPending || policia.GetComponent<NavMeshAgent>().remainingDistance > 0.5f)
         {
@@ -31,6 +33,5 @@ public class TareaDarRefuerzo : TareaHTN
         Debug.Log($"{policia.AgentId}: Lleg� a la zona de refuerzo.");
         yield return new WaitForSeconds(3f); // Simular espera
 
-        policia.IniciarPatrulla();
     }
 }

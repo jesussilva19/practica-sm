@@ -6,13 +6,13 @@ using UnityEngine.AI;
 
 public class Policia : CommunicationAgent
 {
-    private NavMeshAgent _navAgent;
+    public NavMeshAgent _navAgent;
 
     public Transform[] destinos;
-    private int _currentWaypointIndex = 0;
+    public int _currentWaypointIndex = 0;
 
     public bool isPatrolling = true;
-    private bool isSearching = false;
+    public bool isSearching = false;
     public bool ocupado = false;  // Flag that indicates if the agent is busy with a task
 
     // Estados de detección del ladrón
@@ -70,7 +70,10 @@ public class Policia : CommunicationAgent
     protected override void Update()
     {
         base.Update();
-
+        if (planeador != null)
+        {
+            planeador.Planificar(this);
+        }
         // Puede añadir lógica adicional aquí si lo necesita
     }
 
@@ -108,7 +111,6 @@ public class Policia : CommunicationAgent
                     Debug.Log($"Policia {AgentId}: Recibido aviso de ladrón capturado");
                     ladronViendo = false;
                     ladronPerdido = false;
-                    IniciarPatrulla();
                 }
                 else
                 {
@@ -160,42 +162,6 @@ public class Policia : CommunicationAgent
         }
     }
 
-    public void IniciarPatrulla()
-    {
-        if (destinos == null || destinos.Length == 0) return;
-        if (ocupado) return;  // Can't patrol if busy
-
-        isPatrolling = true;
-        IrAlSiguienteDestino();
-        Debug.Log($"Policia {AgentId}: Comenzando patrulla");
-    }
-
-    public void PausarPatrulla()
-    {
-        isPatrolling = false;
-        if (_navAgent != null && _navAgent.isOnNavMesh)
-            _navAgent.ResetPath();
-        Debug.Log($"Policia {AgentId}: Pausando patrulla");
-    }
-
-    public void ActualizarPatrulla()
-    {
-        if (!isPatrolling || isSearching || ladronViendo || ocupado) return;
-        if (_navAgent != null && _navAgent.isOnNavMesh && !_navAgent.pathPending && _navAgent.remainingDistance <= 0.2f)
-            IrAlSiguienteDestino();
-    }
-
-    private void IrAlSiguienteDestino()
-    {
-        if (destinos == null || destinos.Length == 0) return;
-        _currentWaypointIndex = (_currentWaypointIndex + 1) % destinos.Length;
-        var next = destinos[_currentWaypointIndex];
-        if (next != null && _navAgent != null && _navAgent.isOnNavMesh)
-        {
-            _navAgent.SetDestination(next.position);
-            Debug.Log($"Policia {AgentId}: Moving to waypoint {_currentWaypointIndex}");
-        }
-    }
 
     public void LadronVisto(Transform thief)
     {
@@ -213,6 +179,7 @@ public class Policia : CommunicationAgent
                 Debug.Log($"Policia {AgentId}: Interrumpiendo tarea actual para perseguir al ladrón");
                 // Don't set ocupado to false here as the task should handle the cleanup
             }
+            _navAgent.SetDestination(thief.position);
 
             // Broadcast a otros policías
             Debug.Log($"Policia {AgentId}: Ladrón detectado en {thief.position}! iniciando subastas...");
@@ -280,7 +247,6 @@ public class Policia : CommunicationAgent
             }
         }
 
-        IniciarPatrulla();
         isSearching = false;
         Debug.Log($"Policia {AgentId}: Search complete, resuming patrol");
     }
