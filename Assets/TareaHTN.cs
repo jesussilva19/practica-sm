@@ -169,6 +169,7 @@ public class TareaInterceptar : TareaHTN
             policia.auctionsParticipating.Clear();
             policia.StartAuction("AUCTION_GOLD");
             policia.StartAuction("AUCTION_DOOR");
+            policia.ocupado = false;
         }
     }
 }
