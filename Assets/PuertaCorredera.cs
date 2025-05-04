@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class PuertaCorredera : MonoBehaviour
 {
-    [Header("Configuración")]
+    // Posiciones de la puerta
     public Transform posicionCerrada;
     public Transform posicionAbierta;
     public float velocidad = 5.0f;
     public float tiempoEspera = 2.0f;
 
-    [Header("Sonidos")]
+    // Sonidos para abrir y cerrar la puerta
     public AudioClip sonidoAbrir;
     public AudioClip sonidoCerrar;
-
     private AudioSource audioSource;
+
+    // Variables internas
     private Vector3 posicionObjetivo;
     private bool alguienDetectado = false;
     private float tiempoContador = 0f;
@@ -52,9 +53,9 @@ public class PuertaCorredera : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
+
     void Update()
     {
-
         // Movimiento suave hacia la posición objetivo
         transform.position = Vector3.Lerp(transform.position, posicionObjetivo, velocidad * Time.deltaTime);
 
@@ -74,6 +75,7 @@ public class PuertaCorredera : MonoBehaviour
         }
     }
 
+    // Método para detectar la presencia de un objeto
     public void PersonaDetectada(bool detectado)
     {
         alguienDetectado = detectado;
@@ -84,6 +86,7 @@ public class PuertaCorredera : MonoBehaviour
         }
     }
 
+    // Métodos para abrir y cerrar la puerta
     void AbrirPuerta()
     {
         posicionObjetivo = posicionAbierta.position;

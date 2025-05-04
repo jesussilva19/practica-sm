@@ -10,6 +10,8 @@ public class Detenido : MonoBehaviour
         agente = GetComponentInParent<Policia>();
     }
 
+    // Se activa cuando el ladrón entra en el trigger
+    // y se detiene al ladrón
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform == scriptLadron.transform)
@@ -17,11 +19,8 @@ public class Detenido : MonoBehaviour
             agente.DetenerLadron();
             scriptLadron.enabled = false;
             Debug.Log("¡El ladrón ha sido capturado! Fin del juego.");
-#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-#else
             Application.Quit();
-#endif
         }
     }
 }

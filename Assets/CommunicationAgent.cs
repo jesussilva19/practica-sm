@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Base class for agents that need to communicate via FIPA ACL messages
-/// </summary>
+// Interfaz para los agentes de comunicación
+public interface ICommunicationAgent
+{
+    // Recibe un mensaje y lo añade a la cola
+    // Este método es llamado por el servicio de mensajes
+    void ReceiveMessage(FipaAclMessage message);
+}
+
+// Clase base para los agentes de comunicación.
 public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
 {
-    [Tooltip("Unique identifier for this agent")]
     public string AgentId;
 
     protected Queue<FipaAclMessage> _messageQueue = new Queue<FipaAclMessage>();
-    protected int _maxMessagesPerFrame = 3; // Limit messages processed per frame
-
+    protected int _maxMessagesPerFrame = 3; // Límite de mensajes a procesar por frame
     protected virtual void Awake()
     {
-        // Ensure the agent has a unique ID
         if (string.IsNullOrEmpty(AgentId))
         {
             AgentId = gameObject.name + "_" + System.Guid.NewGuid().ToString().Substring(0, 8);
@@ -24,37 +27,13 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
 
     protected virtual void Start()
     {
-        // Register with the message service
-        RegisterWithMessageService();
+        RegisterWithMessageService(); //Regsistrar el agente en el servicio de mensajes
     }
 
-    protected virtual void OnEnable()
-    {
-        RegisterWithMessageService();
-    }
-
-    protected virtual void OnDisable()
-    {
-        // Unregister from message service when disabled
-        if (MessageService.Instance != null)
-        {
-            MessageService.Instance.UnregisterAgent(AgentId);
-        }
-    }
-
-    protected virtual void OnDestroy()
-    {
-        // Unregister from message service when destroyed
-        if (MessageService.Instance != null)
-        {
-            MessageService.Instance.UnregisterAgent(AgentId);
-        }
-    }
 
     protected virtual void Update()
     {
-        // Process messages from the queue
-        ProcessMessageQueue();
+        ProcessMessageQueue(); //Procesar la cola de mensajes
     }
 
     protected void RegisterWithMessageService()
@@ -62,7 +41,6 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         if (MessageService.Instance != null)
         {
             MessageService.Instance.RegisterAgent(AgentId, this);
-            Debug.Log($"Agent {AgentId} registered with MessageService");
         }
         else
         {
@@ -70,13 +48,13 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         }
     }
 
-    /// Receives a message and adds it to the queue for processing
+    /// Recibe un mensaje y lo añade a la cola
     public void ReceiveMessage(FipaAclMessage message)
     {
         _messageQueue.Enqueue(message);
     }
 
-    /// Process messages in the queue, limiting to max messages per frame
+    /// Procesa los mensajes de la cola, limitando el número de mensajes procesados por frame al establecido
     protected virtual void ProcessMessageQueue()
     {
         int processedCount = 0;
@@ -88,10 +66,10 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         }
     }
 
-    /// Process a single message based on its performative
+    /// Procesa el mensaje en función de su performativo
     protected virtual void ProcessMessage(FipaAclMessage message)
     {
-        // Default implementation routes messages based on performative
+        // Implementacion base para el procesamiento de los mensajes recibidos
         switch (message.Performative)
         {
             case FipaPerformatives.INFORM:
@@ -122,13 +100,13 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
     }
 
 
-    /// Handle INFORM messages (to be overridden by derived classes)
+    // Gestiona los mensajes INFORM (debe ser sobreescrito por clases derivadas)
     protected virtual void HandleInform(FipaAclMessage message)
     {
         Debug.Log($"Agent {AgentId} received INFORM from {message.Sender}: {message.Content}");
     }
 
-    /// Handle REQUEST messages (to be overridden by derived classes)
+    // Gestiona los mensajes REQUEST (debe ser sobreescrito por clases derivadas)
     protected virtual void HandleRequest(FipaAclMessage message)
     {
         Debug.Log($"Agent {AgentId} received REQUEST from {message.Sender}: {message.Content}");
@@ -136,25 +114,25 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         SendNotUnderstood(message.Sender, message.ConversationId);
     }
 
-    /// Handle AGREE messages (to be overridden by derived classes)
+    // Gestiona los mensajes AGREE (debe ser sobreescrito por clases derivadas)
     protected virtual void HandleAgree(FipaAclMessage message)
     {
         Debug.Log($"Agent {AgentId} received AGREE from {message.Sender}: {message.Content}");
     }
 
-    /// Handle REFUSE messages (to be overridden by derived classes)
+    // Gestiona los mensajes REFUSE (debe ser sobreescrito por clases derivadas)
     protected virtual void HandleRefuse(FipaAclMessage message)
     {
         Debug.Log($"Agent {AgentId} received REFUSE from {message.Sender}: {message.Content}");
     }
 
-    /// Handle NOT_UNDERSTOOD messages (to be overridden by derived classes)
+    // Gestiona los mensajes NOT_UNDERSTOOD (debe ser sobreescrito por clases derivadas)
     protected virtual void HandleNotUnderstood(FipaAclMessage message)
     {
         Debug.Log($"Agent {AgentId} received NOT_UNDERSTOOD from {message.Sender}: {message.Content}");
     }
 
-    /// Send an INFORM message to a specific agent
+    // Envia un mensaje INFORM a un agente específico
     public void SendInform(string receiver, string content, string conversationId = null)
     {
         var message = new FipaAclMessage
@@ -169,7 +147,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         MessageService.Instance.SendMessage(message);
     }
 
-    /// Send a REQUEST message to a specific agent
+    // Envia un mensaje REQUEST a un agente específico
     public void SendRequest(string receiver, string content, string conversationId = null)
     {
         var message = new FipaAclMessage
@@ -184,7 +162,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         MessageService.Instance.SendMessage(message);
     }
 
-    /// Send an AGREE message to a specific agent
+    // Envia un mensaje AGREE a un agente específico
     public void SendAgree(string receiver, string conversationId, string content = "I agree to your request")
     {
         var message = new FipaAclMessage
@@ -199,7 +177,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         MessageService.Instance.SendMessage(message);
     }
 
-    /// Send a REFUSE message to a specific agent
+    // Envia un mensaje REFUSE a un agente específico
     public void SendRefuse(string receiver, string conversationId, string reason = "Request refused")
     {
         var message = new FipaAclMessage
@@ -214,7 +192,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         MessageService.Instance.SendMessage(message);
     }
 
-    /// Send a NOT_UNDERSTOOD message to a specific agent
+    // Envia un mensaje NOT_UNDERSTOOD a un agente específico
     public void SendNotUnderstood(string receiver, string conversationId)
     {
         var message = new FipaAclMessage
@@ -229,6 +207,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
         MessageService.Instance.SendMessage(message);
     }
 
+    // Envia un mensaje con performativo personalizado a un agente específico
     public void SendPerformative(string receiver, string content, string performative, string conversationId = null)
     {
         var msg = new FipaAclMessage
@@ -243,7 +222,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
     }
 
 
-    /// Broadcast a message to all agents except self
+    // Envia un mensaje a todos los agentes registrados (Broadcast)
     protected void BroadcastMessage(string content, string performative = FipaPerformatives.INFORM)
     {
         var message = new FipaAclMessage
@@ -254,7 +233,7 @@ public class CommunicationAgent : MonoBehaviour, ICommunicationAgent
             ConversationId = System.Guid.NewGuid().ToString()
         };
 
-        // Add all other agents as receivers
+        // Añadir todos los agentes registrados como receptores
         foreach (var agentId in MessageService.Instance.GetAllAgentIds())
         {
             if (agentId != AgentId) // Don't send to self

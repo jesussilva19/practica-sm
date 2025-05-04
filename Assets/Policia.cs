@@ -11,9 +11,9 @@ public class Policia : CommunicationAgent
     public Transform[] destinos;
     public int _currentWaypointIndex = 0;
 
-    public bool isPatrolling = true;
-    public bool isSearching = false;
-    public bool ocupado = false;  // Flag that indicates if the agent is busy with a task
+    public bool isPatrolling = true; // Estado que indica si el agente está patrullando
+    public bool isSearching = false; // Estado que indica si el agente está buscando
+    public bool ocupado = false;  // Estado que indica si el agente está ocupado con una tarea
 
     // Estados de detección del ladrón
     public bool ladronVisto = false;    // Ha sido visto alguna vez
@@ -21,8 +21,8 @@ public class Policia : CommunicationAgent
     public bool ladronPerdido = false;  // Lo vimos pero lo perdimos
     public Transform thiefTransform;    // Referencia al transform del ladrón
 
-    public float searchDelayTime = 2f; // Wait time before starting search after losing thief
-    public float searchPointWaitTime = 2f; // Time to spend at each search location
+    public float searchDelayTime = 2f; // Tiempo de espera para volver a buscar tras perder al ladrón
+    public float searchPointWaitTime = 2f; // Tiempo en cada punto de búsqueda
 
     // Puntos de interés
     public Transform goldPoint;
@@ -35,7 +35,7 @@ public class Policia : CommunicationAgent
 
     // Planificador HTN
     private PlaneadorHTN planeador;
-    private Coroutine _htnRoutine;  // Reference to HTN planning coroutine
+    private Coroutine _htnRoutine; 
 
     public class AuctionState
     {
@@ -70,10 +70,9 @@ public class Policia : CommunicationAgent
     protected override void Update()
     {
         base.Update();
-        // Puede añadir lógica adicional aquí si lo necesita
     }
 
-    /// <summary>Override message processing to handle auction performatives</summary>
+    // Método para procesar mensajes recibidos
     protected override void ProcessMessage(FipaAclMessage message)
     {
         switch (message.Performative)
@@ -119,6 +118,7 @@ public class Policia : CommunicationAgent
         }
     }
 
+    // Método para manejar el mensaje de ladrón avistado
     private void HandleThiefSpotted(FipaAclMessage message)
     {
         // Solo procesamos si no estamos viendo al ladrón ahora mismo
@@ -141,13 +141,12 @@ public class Policia : CommunicationAgent
         }
     }
 
+    // Método para ejecutar el plan HTN periódicamente
     private IEnumerator EjecutarPlanPeriodicamente()
     {
         while (true)
         {
-            Debug.Log($"[HTN] Planificando para {AgentId} - ladronViendo={ladronViendo}, ladronVisto={ladronVisto}, ocupado={ocupado}");
-
-            // Only plan if not busy with auctions
+            // Solo se planifica si no se esta ocupado
             if (!ocupado)
             {
                 planeador.Planificar(this);
@@ -159,6 +158,7 @@ public class Policia : CommunicationAgent
     }
 
 
+    // Método para actuar cuando se ve al ladrón
     public void LadronVisto(Transform thief)
     {
         if (_navAgent != null && _navAgent.isOnNavMesh)
@@ -169,33 +169,32 @@ public class Policia : CommunicationAgent
             ladronPerdido = false;
             thiefTransform = thief;
 
-            // If we're busy with an auction task, we can interrupt it for a high-priority thief pursuit
+            // Si estamos ocupados, interrumpimos la tarea actual
             if (ocupado)
             {
                 Debug.Log($"Policia {AgentId}: Interrumpiendo tarea actual para perseguir al ladrón");
-                // Don't set ocupado to false here as the task should handle the cleanup
             }
 
             // Broadcast a otros policías
             Debug.Log($"Policia {AgentId}: Ladrón detectado en {thief.position}! iniciando subastas...");
             BroadcastThiefSighting(thief.position);
 
-            // Iniciar subasta para interceptar solo si no estamos ocupados
-
             auctionsParticipating.Clear();
-            planeador.tareas.Clear();  // Clear any existing tasks
+            planeador.tareas.Clear();  
             planeador.tareas.Enqueue(new TareaPerseguir());
+
+            // Iniciar subastas 
             StartAuction("AUCTION_INTERCEPT");
             StartAuction("AUCTION_GOLD");
             StartAuction("AUCTION_DOOR");
-            Debug.LogError("EN TEORIA PERSEGUIR ENCOLADA");
-            Debug.LogError($"{planeador.tareas.First().GetType()}");
+
             _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
 
             
         }
     }
 
+    // Método para actuar cuando se pierde al ladrón
     public void LadronPerdido(List<Transform> searchPoints)
     {
         Debug.Log($"Policia {AgentId}: Ladrón perdido");
@@ -203,7 +202,7 @@ public class Policia : CommunicationAgent
         ladronVisto = false;
         ladronPerdido = true;
         ocupado = false;
-        isPatrolling = true; // Asegúrate de que el agente pueda patrullar
+        isPatrolling = true; 
         isSearching = false;
 
         destinos = searchPoints.ToArray();
@@ -212,11 +211,12 @@ public class Policia : CommunicationAgent
         if (!isSearching)
             BroadcastThiefLost();
 
-        planeador.tareas.Clear();  // Clear any existing tasks
+        planeador.tareas.Clear(); 
         planeador.tareas.Enqueue(new TareaPatrullar());    
         _htnRoutine = StartCoroutine(planeador.EjecutarPlan(this, this));
     }
 
+    // Método para cuando se detiene al ladrón
     public void DetenerLadron()
     {
         if (_navAgent != null && _navAgent.isOnNavMesh)
@@ -231,34 +231,12 @@ public class Policia : CommunicationAgent
         }
     }
 
-    private IEnumerator BuscarYLuegoPatrullar(List<Transform> searchPoints)
-    {
-        isSearching = true;
-        if (_navAgent != null && _navAgent.isOnNavMesh) _navAgent.isStopped = true;
-        Debug.Log($"Policia {AgentId}: Esperando antes de buscar");
-        yield return new WaitForSeconds(searchDelayTime);
-        if (_navAgent != null && _navAgent.isOnNavMesh) _navAgent.isStopped = false;
 
-        foreach (var point in searchPoints)
-        {
-            if (point == null) continue;
-            if (_navAgent != null && _navAgent.isOnNavMesh)
-            {
-                _navAgent.SetDestination(point.position);
-                while (_navAgent.pathPending || _navAgent.remainingDistance > 0.5f)
-                    yield return null;
-                yield return new WaitForSeconds(searchPointWaitTime);
-            }
-        }
 
-        isSearching = false;
-        Debug.Log($"Policia {AgentId}: Search complete, resuming patrol");
-    }
-
-    #region Auction Methods
-
+    // Método para inciar la subasta
     public void StartAuction(string auctionId)
     {
+        // Asignar el destino según el tipo de subasta
         Vector3 target;
         if (auctionId == "AUCTION_INTERCEPT")
         {
@@ -280,7 +258,6 @@ public class Policia : CommunicationAgent
         var state = new AuctionState { AuctionId = auctionId, Target = target, StartTime = Time.time };
         ActiveAuctions[auctionId] = state;
 
-        // Remember that we're participating in this auction
         auctionsParticipating.Add(auctionId);
 
         BroadcastMessage($"CFP:{auctionId}:{target.x},{target.y},{target.z}", FipaPerformatives.CFP);
@@ -289,11 +266,13 @@ public class Policia : CommunicationAgent
         StartCoroutine(ResolveAuction(auctionId));
     }
 
+    // Método para resolver la subasta
     private IEnumerator ResolveAuction(string auctionId)
     {
         var state = ActiveAuctions[auctionId];
         yield return new WaitForSeconds(proposalTimeout);
 
+        // Comprobar si hay propuestas
         if (state.Proposals.Count == 0)
         {
             Debug.LogWarning($"[{AgentId}] Sin propuestas para {auctionId}");
@@ -302,26 +281,29 @@ public class Policia : CommunicationAgent
             yield break;
         }
 
-        Debug.Log($"[{AgentId}] Received {state.Proposals.Count} proposals for {auctionId}");
+        Debug.Log($"[{AgentId}] Recividas {state.Proposals.Count} propuestas para {auctionId}");
         foreach (var p in state.Proposals)
-            Debug.Log($"  Proposal from {p.Key}: {p.Value:F2}");
+            Debug.Log($"Propuesta de {p.Key}: {p.Value:F2}");
 
-        // If we have proposals, we need to filter out any from agents who are already busy
+        // Filtrar las propuestas, eliminando agentes ocupados
         var availableProposals = state.Proposals
             .Where(p => !p.Key.Contains("_busy"))
             .ToDictionary(p => p.Key, p => p.Value);
 
+        // Si no quedan propuestas disponibles, eliminar la subasta
         if (availableProposals.Count == 0)
         {
-            Debug.LogWarning($"[{AgentId}] No available agents for {auctionId}, all are busy");
+            Debug.LogWarning($"[{AgentId}] No quedan agentes disponibles para {auctionId}, todos están ocupados");
             ActiveAuctions.Remove(auctionId);
             auctionsParticipating.Remove(auctionId);
             yield break;
         }
 
+        // Elegir el ganador de la subasta
         var winner = availableProposals.Aggregate((l, r) => l.Value < r.Value ? l : r);
-        Debug.Log($"[{AgentId}] Winner for {auctionId} is {winner.Key} with bid {winner.Value:F2}");
+        Debug.Log($"[{AgentId}] Ganador de {auctionId} es {winner.Key} con {winner.Value:F2}");
 
+        // Enviar el resultado a todos los participantes
         foreach (var kv in state.Proposals)
         {
             string perf = kv.Key == winner.Key
@@ -334,6 +316,7 @@ public class Policia : CommunicationAgent
         auctionsParticipating.Remove(auctionId);
     }
 
+    // Manejo de los mensajes recibidos de subasta
     protected void HandleCfp(FipaAclMessage msg)
     {
         var parts = msg.Content.Split(':');
@@ -362,20 +345,18 @@ public class Policia : CommunicationAgent
             );
         }
 
-        // 2) Calculate bid = distance from this police to the target
+        // 2) Calcular la puja = distancia al objetivo
         bid = Vector3.Distance(transform.position, target);
 
-        // 3) Add a penalty if busy (to make it less likely we'll win multiple auctions)
+        // 3) Añadir penalizacion si estamos ocupados
         string bidderStatus = ocupado ? "_busy" : "";
         string bidderId = AgentId + bidderStatus;
-
-        // 4) If we're busy, artificially increase our bid to make it less competitive
         if (ocupado)
         {
-            bid *= 2.0f;  // Double the bid if we're already busy
+            bid *= 2.0f;  
         }
 
-        // 5) Save the auction state and send PROPOSE
+        // 4) Guardar la subasta y enviar la propuesta
         ActiveAuctions[auctionId] = new AuctionState
         {
             AuctionId = auctionId,
@@ -383,10 +364,11 @@ public class Policia : CommunicationAgent
             StartTime = Time.time
         };
 
-        Debug.Log($"[{AgentId}] Received CFP {auctionId}, bid={bid:F2}, ocupado={ocupado}");
+        Debug.Log($"[{AgentId}] Recibido CFP {auctionId}, puja={bid:F2}, ocupado={ocupado}");
         SendPerformative(msg.Sender, $"{auctionId}:{bid:F2}", FipaPerformatives.PROPOSE);
     }
 
+    // Manejo de mensajes de propuesta
     protected void HandlePropose(FipaAclMessage msg)
     {
         var parts = msg.Content.Split(':');
@@ -395,19 +377,20 @@ public class Policia : CommunicationAgent
         if (ActiveAuctions.TryGetValue(id, out var st))
         {
             st.Proposals[msg.Sender] = bid;
-            Debug.Log($"[{AgentId}] Recorded proposal for {id} from {msg.Sender}: {bid:F2}");
+            Debug.Log($"[{AgentId}] Guardada propuesta para {id} de {msg.Sender}: {bid:F2}");
         }
     }
 
+    // Manejo de mensajes de aceptación de propuestas
     protected void HandleAcceptProposal(FipaAclMessage msg)
     {
         var parts = msg.Content.Split(':');
         var auctionId = parts[1];
 
-        // Check if we're already busy with another auction
+        // Comprobar si estamos ocupados
         if (ocupado)
         {
-            Debug.Log($"[{AgentId}] Won auction {auctionId} but already busy, sending refuse");
+            Debug.Log($"[{AgentId}] Subasta ganada {auctionId} pero ocupado, rechazando");
             SendPerformative(msg.Sender, $"BUSY:{auctionId}", FipaPerformatives.REFUSE);
             return;
         }
@@ -415,10 +398,10 @@ public class Policia : CommunicationAgent
         if (!ActiveAuctions.TryGetValue(auctionId, out var state))
             return;
 
-        // Set as busy now that we've accepted the auction
+        // Establecernos como ocupados
         ocupado = true;
 
-        // Cancel HTN & patrol
+        // Cancelar HTN
         ladronViendo = false;
         isPatrolling = false;
         if (_htnRoutine != null) { StopCoroutine(_htnRoutine); _htnRoutine = null; }
@@ -443,6 +426,20 @@ public class Policia : CommunicationAgent
 
         ActiveAuctions.Remove(auctionId);
     }
+
+    // Manejo de mensajes de rechazo de propuestas
+    protected void HandleRejectProposal(FipaAclMessage msg)
+    {
+        var parts = msg.Content.Split(':');
+        var auctionId = parts[1];
+        Debug.Log($"[{AgentId}] Recibido REJECT_PROPOSAL para {auctionId} de {msg.Sender}");
+
+        // Si no nos tocó, volvemos a la rutina de patrulla/HTN solo si no estamos ocupados
+        if (!ocupado && _htnRoutine == null)
+            _htnRoutine = StartCoroutine(EjecutarPlanPeriodicamente());
+    }
+
+
 
     private IEnumerator MonitorearLadronDuranteIntercept(Vector3 lastKnownPosition)
     {
@@ -478,20 +475,9 @@ public class Policia : CommunicationAgent
         }
     }
 
-    protected void HandleRejectProposal(FipaAclMessage msg)
-    {
-        var parts = msg.Content.Split(':');
-        var auctionId = parts[1];
-        Debug.Log($"[{AgentId}] Received REJECT_PROPOSAL for {auctionId} from {msg.Sender}");
 
-        // Si no nos tocó, volvemos a la rutina de patrulla/HTN solo si no estamos ocupados
-        if (!ocupado && _htnRoutine == null)
-            _htnRoutine = StartCoroutine(EjecutarPlanPeriodicamente());
-    }
 
-    #endregion
-
-    // --- Broadcast helpers ---
+    // Broadcasts para distintos tipos de mensajes
     private void BroadcastThiefSighting(Vector3 position)
     {
         BroadcastMessage($"THIEF_SPOTTED:{position.x},{position.y},{position.z}", FipaPerformatives.INFORM);

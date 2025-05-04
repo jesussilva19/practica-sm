@@ -6,7 +6,6 @@ public class Persecucion : MonoBehaviour
 {
     public Transform ladron;
     public Transform[] puntosBusqueda;
-
     private Policia agente;
 
     private void Start()
@@ -14,6 +13,7 @@ public class Persecucion : MonoBehaviour
         agente = GetComponentInParent<Policia>();
     }
 
+    // Se activa cuando el ladrón entra en el trigger
     private void OnTriggerEnter(Collider other)
     {
 
@@ -27,11 +27,12 @@ public class Persecucion : MonoBehaviour
         }
     }
 
+    // Se activa cuando el ladrón sigue dentro del trigger
+    // y se verifica si el ladrón sigue en la línea de visión
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.LogError($"AAAAAAAA {agente.AgentId}");
             agente.thiefTransform = other.transform;
 
             if (!TieneLineaDeVision(other.transform))
@@ -48,6 +49,7 @@ public class Persecucion : MonoBehaviour
         }
     }
 
+    // Se activa cuando el ladrón sale del trigger
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))

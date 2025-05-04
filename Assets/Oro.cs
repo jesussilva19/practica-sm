@@ -10,7 +10,7 @@ public class Oro : MonoBehaviour
         {
             Debug.Log("¡El ladrón ha robado el objeto!");
             transform.SetParent(ladron); // Asigna el oro como hijo del ladrón
-            transform.localPosition = Vector3.zero; // Opcional: Ajusta la posición relativa del oro
+            transform.localPosition = Vector3.zero; // Ajusta la posición relativa del oro
         }
     }
 }

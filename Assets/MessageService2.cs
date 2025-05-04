@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Singleton service for handling message passing between agents
-/// </summary>
+// Clase que gestiona el envío y recepción de mensajes entre agentes
 public class MessageService : MonoBehaviour
 {
     private static MessageService _instance;
+    private Dictionary<string, ICommunicationAgent> _agents = new Dictionary<string, ICommunicationAgent>();
+
     public static MessageService Instance
     {
         get
@@ -22,8 +22,6 @@ public class MessageService : MonoBehaviour
         }
     }
 
-    private Dictionary<string, ICommunicationAgent> _agents = new Dictionary<string, ICommunicationAgent>();
-
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -37,9 +35,7 @@ public class MessageService : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Register an agent with the message service
-    /// </summary>
+    // Regsitrar un agente en el servicio de mensajes
     public void RegisterAgent(string agentId, ICommunicationAgent agent)
     {
         if (!_agents.ContainsKey(agentId))
@@ -53,40 +49,34 @@ public class MessageService : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Unregister an agent from the message service
-    /// </summary>
+    // Desregistrar un agente del servicio de mensajes
     public void UnregisterAgent(string agentId)
     {
         if (_agents.ContainsKey(agentId))
         {
             _agents.Remove(agentId);
-            //Debug.Log($"Agent {agentId} unregistered from MessageService");
+            Debug.Log($"Agent {agentId} unregistered from MessageService");
         }
     }
 
-    /// <summary>
-    /// Get a list of all registered agent IDs
-    /// </summary>
+    // Obtener la lista de IDs de todos los agentes registrados
     public List<string> GetAllAgentIds()
     {
         return new List<string>(_agents.Keys);
     }
 
-    /// <summary>
-    /// Send a message to all receivers specified in the message
-    /// </summary>
+    // Envia un mensaje a los agentes destinatarios
     public void SendMessage(FipaAclMessage message)
     {
         if (string.IsNullOrEmpty(message.Sender))
         {
-            Debug.LogWarning("Attempted to send message with no sender");
+            Debug.LogWarning("Se ha intentado enviar un mensaje sin destinatario");
             return;
         }
 
         if (message.Receivers == null || message.Receivers.Count == 0)
         {
-            Debug.LogWarning($"Message from {message.Sender} has no receivers");
+            Debug.LogWarning($"Mensaje de {message.Sender} no tiene destinatarios");
             return;
         }
 
@@ -95,23 +85,21 @@ public class MessageService : MonoBehaviour
             if (_agents.TryGetValue(receiver, out ICommunicationAgent agent))
             {
                 agent.ReceiveMessage(message);
-                //Debug.Log($"Message from {message.Sender} delivered to {receiver}: {message.Performative} - {message.Content}");
             }
             else
             {
-                Debug.LogWarning($"Could not deliver message to {receiver}: agent not found");
+                Debug.LogWarning($"No se pudo enviar el mensaje a {receiver}: agente no encontrado");
             }
         }
     }
 
-    /// <summary>
-    /// Broadcast a message to all registered agents except the sender
-    /// </summary>
+    // Envia un mensaje a todos los agentes registrados (Broadcast), menos al remitente
+    // Se utiliza para enviar mensajes a todos los agentes, excepto al remitente
     public void BroadcastMessage(FipaAclMessage message)
     {
         if (string.IsNullOrEmpty(message.Sender))
         {
-            Debug.LogWarning("Attempted to broadcast message with no sender");
+            Debug.LogWarning("Se ha intentado enviar un mensaje sin remitente");
             return;
         }
 
@@ -122,7 +110,7 @@ public class MessageService : MonoBehaviour
                 message.Receivers.Clear();
                 message.Receivers.Add(agentEntry.Key);
                 agentEntry.Value.ReceiveMessage(message);
-                Debug.Log($"Broadcast message from {message.Sender} delivered to {agentEntry.Key}: {message.Performative} - {message.Content}");
+                Debug.Log($"Mensaje Broadcast de {message.Sender} enviado a {agentEntry.Key}: {message.Performative} - {message.Content}");
             }
         }
     }
