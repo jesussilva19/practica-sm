@@ -113,41 +113,65 @@ public class TareaAuction : TareaHTN
     }
 }
 
-
-public class TareaDarRefuerzo : TareaHTN
+public class TareaInterceptar : TareaHTN
 {
-    private Vector3 posicionRefuerzo;
+   private Vector3 _target;
 
-    public TareaDarRefuerzo(Vector3 posicion)
+    public TareaInterceptar(Vector3 target)
     {
-        posicionRefuerzo = posicion;
+        _target = target;
     }
+
 
     public override bool EsEjecutable(Policia policia)
     {
-        // Siempre se puede intentar acudir si no est� ocupado
-        return true;
-    }
+        // Esta tarea siempre es ejecutable si es asignada, es prioritaria
+        return  true;
+    } 
 
     public override IEnumerator Ejecutar(Policia policia)
     {
-        Debug.LogError("AAAAAAAAAAAAaaaa");
-        policia.isPatrolling = false;
-        if (policia._navAgent != null && policia._navAgent.isOnNavMesh)
-            policia._navAgent.ResetPath();
-        Debug.Log($"Policia {policia.AgentId}: Pausando patrulla"); policia.GetComponent<NavMeshAgent>().SetDestination(posicionRefuerzo);
-
-        while (policia.GetComponent<NavMeshAgent>().pathPending || policia.GetComponent<NavMeshAgent>().remainingDistance > 0.5f)
+        Debug.Log($"[HTN] TareaInterceptar: {policia.AgentId} moviendose al objetivo{_target}");
+        policia.ocupado = true;
+        var nav = policia.GetComponent<NavMeshAgent>();
+        if (nav == null)
         {
+            Debug.LogError($"[HTN] TareaInterceptar: {policia.AgentId} missing NavMeshAgent component");
+            yield break;
+        }
+
+        nav.SetDestination(_target);
+        // Esperar hasta que el agente llegue al oro
+        while (nav.pathPending || nav.remainingDistance > 0.5f)
+        {
+            // Si vemos al ladrón mientras vamos hacia allí, esto se interrumpirá por otra acción
+            if (policia.ladronViendo)
+            {
+                yield break;
+            }
+            yield return null;
             yield return null;
         }
 
-        Debug.Log($"{policia.AgentId}: Lleg� a la zona de refuerzo.");
-        yield return new WaitForSeconds(3f); // Simular espera
+        // Llegamos a la última posición conocida
+        Debug.Log($"[{policia.AgentId}] Llegué a la última posición del ladrón, pero no lo veo");
 
+
+        // Si no lo hemos visto en este tiempo
+        if (!policia.ladronViendo)
+        {
+            // Dado que ya no estamos en intercepción, marcamos como no ocupado
+            policia.ocupado = false;
+
+            // Lanzar las subastas de oro y puerta si no estamos viendo al ladrón
+            Debug.Log($"[{policia.AgentId}] No encontré al ladrón, iniciando subastas de oro y puerta");
+            policia.ActiveAuctions.Clear();
+            policia.auctionsParticipating.Clear();
+            policia.StartAuction("AUCTION_GOLD");
+            policia.StartAuction("AUCTION_DOOR");
+        }
     }
 }
-
 
 // Clase que representa una tarea de ir a la ubicacion del oro
 public class TareaOro : TareaHTN

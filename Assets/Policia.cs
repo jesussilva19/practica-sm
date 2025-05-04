@@ -31,7 +31,7 @@ public class Policia : CommunicationAgent
     // Sistema de subastas FIPA
     public float proposalTimeout = 1f;
     public Dictionary<string, AuctionState> ActiveAuctions = new Dictionary<string, AuctionState>();
-    private HashSet<string> auctionsParticipating = new HashSet<string>();  // Track auctions we're participating in
+    public HashSet<string> auctionsParticipating = new HashSet<string>();  // Track auctions we're participating in
 
     // Planificador HTN
     private PlaneadorHTN planeador;
@@ -407,13 +407,10 @@ public class Policia : CommunicationAgent
         if (_htnRoutine != null) { StopCoroutine(_htnRoutine); _htnRoutine = null; }
         if (_navAgent != null && _navAgent.isOnNavMesh) _navAgent.ResetPath();
 
+
         if (auctionId == "AUCTION_INTERCEPT")
         {
-            Debug.Log($"[{AgentId}] Ganador INTERCEPT, moviendo a {state.Target}");
-            _navAgent.SetDestination(state.Target);
-
-            // Corrutina para monitorear si vemos al ladrón mientras nos movemos
-            StartCoroutine(MonitorearLadronDuranteIntercept(state.Target));
+            StartCoroutine(new TareaInterceptar(state.Target).Ejecutar(this));
         }
         else if (auctionId == "AUCTION_GOLD")
         {
@@ -438,43 +435,6 @@ public class Policia : CommunicationAgent
         if (!ocupado && _htnRoutine == null)
             _htnRoutine = StartCoroutine(EjecutarPlanPeriodicamente());
     }
-
-
-
-    private IEnumerator MonitorearLadronDuranteIntercept(Vector3 lastKnownPosition)
-    {
-        // Esperar a que nos acerquemos a la posición
-        while (_navAgent.pathPending || _navAgent.remainingDistance > 0.5f)
-        {
-            // Si vemos al ladrón mientras vamos hacia allí, esto se interrumpirá por otra acción
-            if (ladronViendo)
-            {
-                yield break;
-            }
-            yield return null;
-        }
-
-        // Llegamos a la última posición conocida
-        Debug.Log($"[{AgentId}] Llegué a la última posición del ladrón, pero no lo veo");
-
-        // Esperar un poco para ver si aparece
-        yield return new WaitForSeconds(1.5f);
-
-        // Si no lo hemos visto en este tiempo
-        if (!ladronViendo)
-        {
-            // Dado que ya no estamos en intercepción, marcamos como no ocupado
-            ocupado = false;
-
-            // Lanzar las subastas de oro y puerta si no estamos viendo al ladrón
-            Debug.Log($"[{AgentId}] No encontré al ladrón, iniciando subastas de oro y puerta");
-            ActiveAuctions.Clear();
-            auctionsParticipating.Clear();
-            StartAuction("AUCTION_GOLD");
-            StartAuction("AUCTION_DOOR");
-        }
-    }
-
 
 
     // Broadcasts para distintos tipos de mensajes
